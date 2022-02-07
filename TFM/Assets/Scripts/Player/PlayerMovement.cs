@@ -1,76 +1,136 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private PlayerInputAction playerInputAction;
-    private CharacterController controller;
-    [SerializeField] private Transform cam;
-    private float turnSmoothTime = 0.1f;
-    private float turnSmoothVelocity;
+    #region "FIELDS"
+    [Header("Movement options")]
+    [SerializeField] private float speed;
+    [SerializeField] private float jumpHeight;
+    [SerializeField] private float walkSpeed;
 
-    private Vector3 velocity;
+    [Header("Camera options")]
+    [SerializeField] private Transform cam;
+    [SerializeField] private float turnSmoothTime = 0.1f;
+
+    [Header("Ground options")]
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private Transform groundCkeck;
-    [SerializeField] private float groundDistance = 0.4f;
+    [SerializeField] private float groundRadius = 0.4f;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private bool drawSphereChecker;
 
-    private bool isGrounded;
+    [HideInInspector] public bool isMoving;
+    [HideInInspector] public bool isWalking;
+    [HideInInspector] public bool isLanding;
+
+    private CharacterController _controller;
+    private float _turnSmoothVelocity;
+    private Vector3 _velocity;
+    private Vector2 _inputVector;
+    private Vector3 _move;
+    private Vector3 _moveDir;
+    private bool freeze;
+    #endregion
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-
-        playerInputAction = new PlayerInputAction();
-        playerInputAction.Player.Enable();
-        playerInputAction.Player.Jump.started += Jump;
-        Debug.Log(Mathf.Sqrt(20 * -2 * gravity));
-
+        _controller = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCkeck.position, groundDistance, groundMask);
-
-        if (isGrounded && velocity.y < 0)
+        
+        if (InputController.instance.isAttacking)
         {
-            velocity.y = -2f;
+            return;
+        }
+        CollectData();
+        Jump();
+        _velocity.y += gravity * Time.deltaTime; //We apply gravity
+        _controller.Move(_velocity * Time.deltaTime);
+
+        //Check if the vector is moving
+        if (_move.magnitude >= 0.1f && !freeze)
+        {
+            CalculatePlayerRotation();
+            if (InputController.instance.isBlocking)
+            {
+                _controller.Move(_moveDir.normalized * walkSpeed * Time.deltaTime);
+            }
+            else
+            {
+                _controller.Move(_moveDir.normalized * speed * Time.deltaTime);
+            }
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
 
-        Vector2 inputVector = playerInputAction.Player.Movement.ReadValue<Vector2>();
-        float speed = 5f;
-        Vector3 move = new Vector3(inputVector.x, 0, inputVector.y);
-
-        if (move.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
-        }
-
-        velocity.y += gravity * Time.deltaTime;
-
-        controller.Move(velocity * Time.deltaTime);
+        ResetGravityVelocity();
     }
-    public void Jump(InputAction.CallbackContext context)
+
+    #region "METHODS"
+
+    private void Jump()
     {
-        //rb.AddForce(Vector3.up * 2f, ForceMode.Impulse);
+        if (InputController.instance.isJumping && CheckIfIsGrounded())
+        {
+            isLanding = false;
+            _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+        }
+    }
+
+    private void CalculatePlayerRotation()
+    {
+        float targetAngle = Mathf.Atan2(_move.x, _move.z) * Mathf.Rad2Deg + cam.eulerAngles.y; //In this variable we know what angle we should rotate our character depending on which vector we are in.
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime); //Smoothing the rotation
+        transform.rotation = Quaternion.Euler(0f, angle, 0f); //We apply the rotation to our character
+        _moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward; //We say go forward depending on where you are looking.
+
+    }
+
+    private void CollectData()
+    {
+        //Collect data to fill Vectors
+        _inputVector = InputController.instance.GetReadValueFromInput();
+        _move = new Vector3(_inputVector.x, 0, _inputVector.y);
+    }
+
+    private void ResetGravityVelocity()
+    {
+        if (CheckIfIsGrounded() && _velocity.y < 0)
+        {
+            InputController.instance.isJumping = false;
+            isLanding = true;
+            _velocity.y = -2f;
+        }
+    }
+
+    private bool CheckIfIsGrounded()
+    {
+        return Physics.CheckSphere(groundCkeck.position, groundRadius, groundMask);
+    }
+
+    public void FreezePlayer()
+    {
+        freeze = true;
+    }
+
+    public void UnFreezePlayer()
+    {
+        freeze = false;
     }
 
     private void OnDrawGizmos()
     {
         if (drawSphereChecker)
         {
-            Gizmos.DrawWireSphere(groundCkeck.position, groundDistance);
+            Gizmos.DrawWireSphere(groundCkeck.position, groundRadius);
         }
     }
+    #endregion
 }
 
 
