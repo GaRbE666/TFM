@@ -1,51 +1,43 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     #region "FIELDS"
-    [Header("Movement options")]
-    [SerializeField] private float speed;
-    [SerializeField] private float jumpHeight;
+    [Header("Movements Settings")]
+    [SerializeField] private float runSpeed;
     [SerializeField] private float walkSpeed;
-    [SerializeField] private float dashDistance;
-    [SerializeField] private Vector3 drag; 
+    [SerializeField] private float jumpHeight;
+    [SerializeField] private float backDashDistance;
+    [SerializeField] private float forwardDashDistance;
 
-    [Header("Camera options")]
-    [SerializeField] private Transform cam;
-    [SerializeField] private float turnSmoothTime = 0.1f;
-
-    [Header("Ground options")]
-    [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private Transform groundCkeck;
-    [SerializeField] private float groundRadius = 0.4f;
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private bool drawSphereChecker;
+    [Header("Ground Settings")]
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundChecker;
+    [SerializeField] private float radiusChecker;
+    [SerializeField] private bool showGroundChecker;
 
     [HideInInspector] public bool isMoving;
-    [HideInInspector] public bool isWalking;
-    [HideInInspector] public bool isLanding;
+    [HideInInspector] public bool isInFloor;
 
-    private CharacterController _controller;
-    private float _turnSmoothVelocity;
-    private Vector3 _velocity;
-    private Vector2 _inputVector;
-    private Vector3 _move;
-    private Vector3 _moveDir;
-    private bool _freeze;
-    private bool _rolling = true;
+    private Rigidbody _rb;
+    private Vector3 _inputs;
+    [SerializeField] private bool _freeze;
     #endregion
 
+    #region "UNITY EVENTS"
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        
+
         if (InputController.instance.isAttacking)
         {
+            _inputs = Vector3.zero;
             return;
         }
 
@@ -54,97 +46,105 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        CollectData();
+        GroundChecker();
 
-        #region "JUMP CODE"
-        Jump();
-        _velocity.y += gravity * Time.deltaTime; //We apply gravity
-        _controller.Move(_velocity * Time.deltaTime);
-        #endregion
+        _inputs = new Vector3(InputController.instance.GetReadValueFromInput().x, 0, InputController.instance.GetReadValueFromInput().y);
 
-        #region "MOVE CODE"
-        //Check if the vector is moving
-        if (_move.magnitude >= 0.1f)
+        if (_inputs != Vector3.zero)
         {
-            CalculatePlayerRotation();
-            if (InputController.instance.isBlocking)
-            {
-                _controller.Move(_moveDir.normalized * walkSpeed * Time.deltaTime);
-            }
-            else
-            {
-                _controller.Move(_moveDir.normalized * speed * Time.deltaTime);
-            }
             isMoving = true;
+            transform.forward = _inputs;
         }
         else
         {
             isMoving = false;
         }
-        #endregion
 
-        ResetGravityVelocity();
+        if (InputController.instance.isJumping && GroundChecker())
+        {
+            Jump();
+        }
+
+        if (InputController.instance.isRolling && GroundChecker())
+        {
+            DashBack();
+        }
+
+        if (InputController.instance.isRolling && GroundChecker() && isMoving)
+        {
+            DashForward();
+        }
+
+        if (GroundChecker())
+        {
+            isInFloor = true;
+            InputController.instance.isJumping = false;
+            InputController.instance.isRolling = false;
+        }
+        else
+        {
+            isInFloor = false;
+        }
     }
+
+    private void FixedUpdate()
+    {
+        if (InputController.instance.isBlocking)
+        {
+            _rb.MovePosition(_rb.position + _inputs * walkSpeed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            _rb.MovePosition(_rb.position + _inputs * runSpeed * Time.fixedDeltaTime);
+        }
+    }
+    #endregion
 
     #region "METHODS"
+
+    private void DashBack()
+    {
+        _rb.drag = 8f;
+        Vector3 dashVelocity = Vector3.Scale(-transform.forward, backDashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1))/ -Time.deltaTime));
+        _rb.AddForce(dashVelocity, ForceMode.VelocityChange);
+        _rb.drag = 0f;
+    }
+
+    private void DashForward()
+    {
+        _rb.drag = 8f;
+        Vector3 dashVelocity = Vector3.Scale(transform.forward, forwardDashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime));
+        _rb.AddForce(dashVelocity, ForceMode.VelocityChange);
+        _rb.drag = 0f;
+    }
+
     private void Jump()
     {
-        if (InputController.instance.isJumping && CheckIfIsGrounded())
-        {
-            isLanding = false;
-            _velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-        }
+        _rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2 * Physics.gravity.y), ForceMode.VelocityChange);
     }
 
-    private void CalculatePlayerRotation()
+    private bool GroundChecker()
     {
-        float targetAngle = Mathf.Atan2(_move.x, _move.z) * Mathf.Rad2Deg + cam.eulerAngles.y; //In this variable we know what angle we should rotate our character depending on which vector we are in.
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime); //Smoothing the rotation
-        transform.rotation = Quaternion.Euler(0f, angle, 0f); //We apply the rotation to our character
-        _moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward; //We say go forward depending on where you are looking.
-
+        return Physics.CheckSphere(groundChecker.position, radiusChecker, groundLayer);
     }
 
-    private void CollectData()
-    {
-        //Collect data to fill Vectors
-        _inputVector = InputController.instance.GetReadValueFromInput();
-        _move = new Vector3(_inputVector.x, 0, _inputVector.y);
-    }
-
-    private void ResetGravityVelocity()
-    {
-        if (CheckIfIsGrounded() && _velocity.y < 0)
-        {
-            InputController.instance.isJumping = false;
-            isLanding = true;
-            _velocity.y = -2f;
-        }
-    }
-
-    private bool CheckIfIsGrounded()
-    {
-        return Physics.CheckSphere(groundCkeck.position, groundRadius, groundMask);
-    }
-
-    public void FreezePlayer()
+    private void FreezePlayer()
     {
         _freeze = true;
+        //_inputs = Vector3.zero;
     }
 
-    public void UnFreezePlayer()
+    private void UnFreezePlayer()
     {
         _freeze = false;
     }
 
     private void OnDrawGizmos()
     {
-        if (drawSphereChecker)
+        if (showGroundChecker)
         {
-            Gizmos.DrawWireSphere(groundCkeck.position, groundRadius);
+            Gizmos.DrawWireSphere(groundChecker.position, radiusChecker);
         }
     }
     #endregion
 }
-
-

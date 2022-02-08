@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    #region "FIELDS"
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerHealth playerHealth;
@@ -15,7 +16,9 @@ public class PlayerAnimation : MonoBehaviour
     private int _death = Animator.StringToHash("death");
     private int _attack = Animator.StringToHash("attack");
     private int _land = Animator.StringToHash("land");
-    private int _roll = Animator.StringToHash("roll");
+    private int _rollBack = Animator.StringToHash("rollBack");
+    private int _rollForward = Animator.StringToHash("rollForward");
+    #endregion
 
     private void Update()
     {
@@ -25,16 +28,31 @@ public class PlayerAnimation : MonoBehaviour
         DeathAnim();
         AttackAnim();
         LandAnim();
-        RollAnim();
+        RollBackAnim();
+        RollForwardAnim();
     }
 
-    private void RollAnim()
+    public bool IfCurrentAnimationIsPlaying(string animationName)
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
+    private void RollBackAnim()
     {
         if (playerMovement.isMoving)
         {
-            InputController.instance.isRollingBack = false;
+            playerAnimator.SetBool(_rollBack, false);
         }
-        playerAnimator.SetBool(_roll, InputController.instance.isRollingBack);
+        playerAnimator.SetBool(_rollBack, InputController.instance.isRolling);
+    }
+
+    private void RollForwardAnim()
+    {
+        if (!playerMovement.isMoving)
+        {
+            playerAnimator.SetBool(_rollForward, false);
+        }        
+        playerAnimator.SetBool(_rollForward, InputController.instance.isRolling);
     }
 
     private void BlockAnim()
@@ -65,7 +83,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void LandAnim()
     {
-        playerAnimator.SetBool(_land, playerMovement.isLanding);
+        playerAnimator.SetBool(_land, playerMovement.isInFloor);
     }
 
     private void FinishAttackAnim()
@@ -78,8 +96,9 @@ public class PlayerAnimation : MonoBehaviour
         InputController.instance.isJumping = false;
     }
 
-    private void FinishRollBackAnim()
-    {
-        InputController.instance.isRollingBack = false;
+    private void FinishRollAnim()
+    {   
+        InputController.instance.isRolling = false;
+        InputController.instance.canRoll = true;
     }
 }
