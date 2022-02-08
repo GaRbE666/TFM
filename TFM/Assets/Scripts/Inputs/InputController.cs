@@ -10,6 +10,7 @@ public class InputController : MonoBehaviour
     [HideInInspector] public bool isJumping;
     [HideInInspector] public bool isBlocking;
     [HideInInspector] public bool isAttacking;
+    [HideInInspector] public bool isRollingBack;
 
     private void Awake()
     {
@@ -28,6 +29,16 @@ public class InputController : MonoBehaviour
         playerInputAction.Player.Block.performed += BlockIsPressed;
         playerInputAction.Player.Block.canceled += BlockNotPressed;
         playerInputAction.Player.Attack.started += AttackIsPressed;
+        playerInputAction.Player.Roll.started += RollIsPressed;
+    }
+
+    public void RollIsPressed(InputAction.CallbackContext context)
+    {
+        if (isJumping || isAttacking)
+        {
+            return;
+        }
+        isRollingBack = true;
     }
 
     public void AttackIsPressed(InputAction.CallbackContext context)
@@ -46,7 +57,7 @@ public class InputController : MonoBehaviour
 
     public void JumpIsPressed(InputAction.CallbackContext context)
     {
-        if (isBlocking)
+        if (isBlocking || isRollingBack || isAttacking || isRollingBack)
         {
             return;
         }

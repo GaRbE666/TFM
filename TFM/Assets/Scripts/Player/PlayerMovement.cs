@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float walkSpeed;
+    [SerializeField] private float dashDistance;
+    [SerializeField] private Vector3 drag; 
 
     [Header("Camera options")]
     [SerializeField] private Transform cam;
@@ -29,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _inputVector;
     private Vector3 _move;
     private Vector3 _moveDir;
-    private bool freeze;
+    private bool _freeze;
+    private bool _rolling = true;
     #endregion
 
     private void Awake()
@@ -44,13 +48,23 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+
+        if (_freeze)
+        {
+            return;
+        }
+
         CollectData();
+
+        #region "JUMP CODE"
         Jump();
         _velocity.y += gravity * Time.deltaTime; //We apply gravity
         _controller.Move(_velocity * Time.deltaTime);
+        #endregion
 
+        #region "MOVE CODE"
         //Check if the vector is moving
-        if (_move.magnitude >= 0.1f && !freeze)
+        if (_move.magnitude >= 0.1f)
         {
             CalculatePlayerRotation();
             if (InputController.instance.isBlocking)
@@ -67,12 +81,12 @@ public class PlayerMovement : MonoBehaviour
         {
             isMoving = false;
         }
+        #endregion
 
         ResetGravityVelocity();
     }
 
     #region "METHODS"
-
     private void Jump()
     {
         if (InputController.instance.isJumping && CheckIfIsGrounded())
@@ -115,12 +129,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void FreezePlayer()
     {
-        freeze = true;
+        _freeze = true;
     }
 
     public void UnFreezePlayer()
     {
-        freeze = false;
+        _freeze = false;
     }
 
     private void OnDrawGizmos()

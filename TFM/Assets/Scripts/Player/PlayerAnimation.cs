@@ -7,6 +7,7 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerAttack playerAttack;
 
     private int _move = Animator.StringToHash("move");
     private int _block = Animator.StringToHash("block");
@@ -14,6 +15,7 @@ public class PlayerAnimation : MonoBehaviour
     private int _death = Animator.StringToHash("death");
     private int _attack = Animator.StringToHash("attack");
     private int _land = Animator.StringToHash("land");
+    private int _roll = Animator.StringToHash("roll");
 
     private void Update()
     {
@@ -23,6 +25,16 @@ public class PlayerAnimation : MonoBehaviour
         DeathAnim();
         AttackAnim();
         LandAnim();
+        RollAnim();
+    }
+
+    private void RollAnim()
+    {
+        if (playerMovement.isMoving)
+        {
+            InputController.instance.isRollingBack = false;
+        }
+        playerAnimator.SetBool(_roll, InputController.instance.isRollingBack);
     }
 
     private void BlockAnim()
@@ -48,6 +60,7 @@ public class PlayerAnimation : MonoBehaviour
     private void AttackAnim()
     {
         playerAnimator.SetBool(_attack, InputController.instance.isAttacking);
+
     }
 
     private void LandAnim()
@@ -63,5 +76,10 @@ public class PlayerAnimation : MonoBehaviour
     private void FinishJumpAnim()
     {
         InputController.instance.isJumping = false;
+    }
+
+    private void FinishRollBackAnim()
+    {
+        InputController.instance.isRollingBack = false;
     }
 }
