@@ -12,24 +12,25 @@ public class PlayerAnimation : MonoBehaviour
 
     private int _move = Animator.StringToHash("move");
     private int _block = Animator.StringToHash("block");
-    private int _jump = Animator.StringToHash("jump");
     private int _death = Animator.StringToHash("death");
     private int _attack = Animator.StringToHash("attack");
     private int _land = Animator.StringToHash("land");
+    private int _jump = Animator.StringToHash("jump");
     private int _rollBack = Animator.StringToHash("rollBack");
     private int _rollForward = Animator.StringToHash("rollForward");
     #endregion
 
     private void Update()
     {
+        //Debug.Log("PA IsJumping: " + InputController.instance.isJumping);
         MoveAnim();
-        BlockAnim();
-        JumpAnim();
+        //BlockAnim();
+        //JumpAnim();
         DeathAnim();
-        AttackAnim();
-        LandAnim();
-        RollBackAnim();
-        RollForwardAnim();
+        //AttackAnim();
+        //LandAnim();
+        //RollBackAnim();
+        //RollForwardAnim();
     }
 
     public bool IfCurrentAnimationIsPlaying(string animationName)
@@ -37,27 +38,19 @@ public class PlayerAnimation : MonoBehaviour
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
     }
 
-    private void RollBackAnim()
+    public void RollBackTrigger()
     {
-        if (playerMovement.isMoving)
-        {
-            playerAnimator.SetBool(_rollBack, false);
-        }
-        playerAnimator.SetBool(_rollBack, InputController.instance.isRolling);
+        playerAnimator.SetTrigger(_rollBack);
     }
 
-    private void RollForwardAnim()
+    public void RollForwardTrigger()
     {
-        if (!playerMovement.isMoving)
-        {
-            playerAnimator.SetBool(_rollForward, false);
-        }        
-        playerAnimator.SetBool(_rollForward, InputController.instance.isRolling);
+        playerAnimator.SetTrigger(_rollForward);
     }
 
-    private void BlockAnim()
+    public void BlockAnim(bool isBlocking)
     {
-        playerAnimator.SetBool(_block, InputController.instance.isBlocking);
+        playerAnimator.SetBool(_block, isBlocking);
     }
 
     private void MoveAnim()
@@ -65,9 +58,9 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetBool(_move, playerMovement.isMoving);
     }
 
-    private void JumpAnim()
+    public void JumpAnim()
     {
-        playerAnimator.SetBool(_jump, InputController.instance.isJumping);
+        playerAnimator.SetTrigger(_jump);
     }
 
     private void DeathAnim()
@@ -75,15 +68,14 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetBool(_death, playerHealth.death);
     }
 
-    private void AttackAnim()
+    public void AttackAnim()
     {
-        playerAnimator.SetBool(_attack, InputController.instance.isAttacking);
-
+        playerAnimator.SetTrigger(_attack);
     }
 
-    private void LandAnim()
+    public void LandAnim(bool isInFloor)
     {
-        playerAnimator.SetBool(_land, playerMovement.isInFloor);
+        playerAnimator.SetBool(_land, isInFloor);
     }
 
     private void FinishAttackAnim()
@@ -99,6 +91,6 @@ public class PlayerAnimation : MonoBehaviour
     private void FinishRollAnim()
     {   
         InputController.instance.isRolling = false;
-        InputController.instance.canRoll = true;
+        //InputController.instance.canRoll = true;
     }
 }

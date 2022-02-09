@@ -4,21 +4,44 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [HideInInspector] public int combo;
+    private PlayerAnimation playerAnimation;
 
-    public void StartCombo()
+    private void Awake()
     {
-        InputController.instance.isAttacking = false;
-        if (combo < 3)
+        playerAnimation = GetComponent<PlayerAnimation>();
+    }
+
+    private void Update()
+    {
+        if (InputController.instance.isAttacking)
         {
-            combo++;
+            Attack();
         }
+
+        if (InputController.instance.isBlocking)
+        {
+            Block();
+        }
+        else
+        {
+            Unblock();
+        }
+
     }
 
-    public void FinishCombo()
+    private void Attack()
     {
+        playerAnimation.AttackAnim();
         InputController.instance.isAttacking = false;
-        combo = 0;
     }
 
+    private void Unblock()
+    {
+        playerAnimation.BlockAnim(false);
+    }
+
+    private void Block()
+    {
+        playerAnimation.BlockAnim(true);
+    }
 }

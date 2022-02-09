@@ -8,13 +8,12 @@ public class InputController : MonoBehaviour
     private static InputController _inputController;
     public static InputController instance { get { return _inputController; } }
     private PlayerInputAction playerInputAction;
-    private PlayerAnimation playerAnimation;
     private PlayerMovement playerMovement;
     [HideInInspector] public bool isJumping;
     [HideInInspector] public bool isBlocking;
-    [HideInInspector] public bool isAttacking;
+    /*[HideInInspector]*/ public bool isAttacking;
     [HideInInspector] public bool isRolling;
-    [HideInInspector] public bool canRoll;
+    [HideInInspector] public bool canPress;
 
     private void Awake()
     {
@@ -27,7 +26,6 @@ public class InputController : MonoBehaviour
             _inputController = this;
         }
 
-        playerAnimation = GetComponent<PlayerAnimation>();
         playerMovement = GetComponent<PlayerMovement>();
 
         playerInputAction = new PlayerInputAction();
@@ -41,12 +39,17 @@ public class InputController : MonoBehaviour
 
     private void Start()
     {
-        canRoll = true;
+        canPress = true;
     }
 
     public void RollIsPressed(InputAction.CallbackContext context)
     {
-        if (isJumping || isAttacking || !canRoll)
+        //if (isJumping || isAttacking || isRolling)
+        //{
+        //    return;
+        //}
+
+        if (!canPress || isJumping)
         {
             return;
         }
@@ -57,7 +60,6 @@ public class InputController : MonoBehaviour
         }
         else
         {
-            canRoll = false;
             isRolling = true;
         }  
     }
@@ -65,16 +67,21 @@ public class InputController : MonoBehaviour
     private IEnumerator DelayRoll()
     {
         yield return new WaitForSeconds(.08f);
-        canRoll = false;
         isRolling = true;
     }
 
     public void AttackIsPressed(InputAction.CallbackContext context)
     {
-        if (isBlocking || isJumping)
+        //if (isBlocking || isJumping || isAttacking)
+        //{
+        //    return;
+        //}
+
+        if (!canPress || isBlocking)
         {
             return;
         }
+
         isAttacking = true;
     }
 
@@ -85,12 +92,17 @@ public class InputController : MonoBehaviour
 
     public void JumpIsPressed(InputAction.CallbackContext context)
     {
-        if (isBlocking || isRolling || isAttacking)
+        //if (isBlocking || isRolling || isAttacking || isJumping)
+        //{
+        //    return;
+        //}
+
+        if (!canPress || isBlocking)
         {
             return;
         }
 
-        if (playerMovement.isMoving || playerAnimation.IfCurrentAnimationIsPlaying("Shield-Idle"))
+        if (playerMovement.isMoving)
         {
             StartCoroutine(DelayJump());
         }
@@ -115,5 +127,15 @@ public class InputController : MonoBehaviour
     public void BlockNotPressed(InputAction.CallbackContext context)
     {
         isBlocking = false;
+    }
+
+    private void BlockPressButton()
+    {
+        canPress = false;
+    }
+
+    private void UnlockPressButton()
+    {
+        canPress = true;
     }
 }

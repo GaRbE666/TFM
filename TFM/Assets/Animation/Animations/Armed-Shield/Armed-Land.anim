@@ -40741,13 +40741,6 @@ AnimationClip:
   m_HasMotionFloatCurves: 1
   m_Events:
   - time: 0
-    functionName: FinishJumpAnim
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0
     functionName: FreezePlayer
     data: 
     objectReferenceParameter: {fileID: 0}
