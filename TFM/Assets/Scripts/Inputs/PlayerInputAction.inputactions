@@ -148,6 +148,17 @@
                 },
                 {
                     "name": "",
+                    "id": "0774d184-7cdc-435e-9053-d476af1a53a3",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "0af7eed8-0ab1-487f-a4e7-2f755c70127f",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
@@ -159,11 +170,33 @@
                 },
                 {
                     "name": "",
+                    "id": "5b8ff552-633a-41ec-9943-cd189f4eaa25",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2e86611b-e93d-4a95-8e8b-751a2c1e9db0",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3bc04924-391e-494d-a015-1b1820b659c0",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
