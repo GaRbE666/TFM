@@ -18,12 +18,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float radiusChecker;
     [SerializeField] private bool showGroundChecker;
 
+    [Header("References")]
+    [SerializeField] private Transform cam;
+
     [HideInInspector] public bool isMoving;
     [HideInInspector] public bool isInFloor;
 
     private Rigidbody _rb;
     private Vector3 _inputs;
-    [SerializeField] private bool _freeze;
+    private bool _freeze;
     private PlayerAnimation playerAnimation;
     #endregion
 
@@ -47,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
         if (_inputs != Vector3.zero)
         {
             isMoving = true;
+            Debug.Log("forward: " + transform.forward + ", Inputs: " + _inputs);
             transform.forward = _inputs;
+
         }
         else
         {
@@ -78,7 +83,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             playerAnimation.LandAnim(false);
-            InputController.instance.isAttacking = false;
             InputController.instance.canPress = false;
         }
     }
@@ -133,13 +137,13 @@ public class PlayerMovement : MonoBehaviour
     private void FreezePlayer()
     {
         _freeze = true;
-        //isMoving = false;
         InputController.instance.canPress = false;
         _inputs = Vector3.zero;
     }
 
     private void UnFreezePlayer()
     {
+        Debug.Log("Unfreeze personaje");
         _freeze = false;
         InputController.instance.canPress = true;
     }

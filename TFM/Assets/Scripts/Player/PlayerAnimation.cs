@@ -18,24 +18,23 @@ public class PlayerAnimation : MonoBehaviour
     private int _jump = Animator.StringToHash("jump");
     private int _rollBack = Animator.StringToHash("rollBack");
     private int _rollForward = Animator.StringToHash("rollForward");
+    private int _strongAttack = Animator.StringToHash("strongAttack");
     #endregion
 
     private void Update()
     {
-        //Debug.Log("PA IsJumping: " + InputController.instance.isJumping);
         MoveAnim();
-        //BlockAnim();
-        //JumpAnim();
         DeathAnim();
-        //AttackAnim();
-        //LandAnim();
-        //RollBackAnim();
-        //RollForwardAnim();
     }
 
     public bool IfCurrentAnimationIsPlaying(string animationName)
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
+    public void StrongAttackAnim()
+    {
+        playerAnimator.SetTrigger(_strongAttack);
     }
 
     public void RollBackTrigger()
@@ -91,6 +90,5 @@ public class PlayerAnimation : MonoBehaviour
     private void FinishRollAnim()
     {   
         InputController.instance.isRolling = false;
-        //InputController.instance.canRoll = true;
     }
 }

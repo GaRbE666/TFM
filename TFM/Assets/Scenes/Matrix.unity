@@ -576,9 +576,9 @@ MonoBehaviour:
   groundChecker: {fileID: 457131572}
   radiusChecker: 0.05
   showGroundChecker: 1
+  cam: {fileID: 963194228}
   isMoving: 0
   isInFloor: 0
-  _freeze: 0
 --- !u!114 &122964746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,6 +595,8 @@ MonoBehaviour:
   isBlocking: 0
   isAttacking: 0
   isRolling: 0
+  canPress: 0
+  isStrongAttacking: 0
 --- !u!114 &122964747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,7 +622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd1fb6f536544a4bb40e1f317637b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combo: 0
 --- !u!114 &122964749
 MonoBehaviour:
   m_ObjectHideFlags: 0

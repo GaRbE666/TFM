@@ -18,6 +18,11 @@ public class PlayerAttack : MonoBehaviour
             Attack();
         }
 
+        if (InputController.instance.isStrongAttacking)
+        {
+            StrongAttack();
+        }
+
         if (InputController.instance.isBlocking)
         {
             Block();
@@ -27,6 +32,12 @@ public class PlayerAttack : MonoBehaviour
             Unblock();
         }
 
+    }
+
+    private void StrongAttack()
+    {
+        playerAnimation.StrongAttackAnim();
+        InputController.instance.isStrongAttacking = false;
     }
 
     private void Attack()
