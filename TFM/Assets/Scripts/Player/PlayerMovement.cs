@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float backDashDistance;
     [SerializeField] private float forwardDashDistance;
+    [Tooltip("How fast the character turns to face movement direction")]
+    [Range(0.0f, 0.3f)]
+    public float RotationSmoothTime = 0.12f;
 
     [Header("Ground Settings")]
     [SerializeField] private LayerMask groundLayer;
@@ -20,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Transform cam;
+    [SerializeField] private CinemachineFreeLook camFreeLook;
 
     [HideInInspector] public bool isMoving;
     [HideInInspector] public bool isInFloor;
@@ -28,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _inputs;
     private bool _freeze;
     private PlayerAnimation playerAnimation;
+    private float _targetRotation;
+    private float _rotationVelocity;
+    private Vector3 targetDirection;
+
     #endregion
 
     #region "UNITY EVENTS"
@@ -45,14 +54,19 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        _inputs = new Vector3(InputController.instance.GetReadValueFromInput().x, 0, InputController.instance.GetReadValueFromInput().y);
+        _inputs = new Vector3(InputController.instance.GetReadValueFromInput().x, 0, InputController.instance.GetReadValueFromInput().y).normalized;
 
         if (_inputs != Vector3.zero)
         {
             isMoving = true;
-            Debug.Log("forward: " + transform.forward + ", Inputs: " + _inputs);
-            transform.forward = _inputs;
 
+            _targetRotation = Mathf.Atan2(_inputs.x, _inputs.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
+
+            // rotate to face input direction relative to camera position
+            transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+
+            targetDirection = Quaternion.Euler(0f, _targetRotation, 0f) * Vector3.forward; 
         }
         else
         {
@@ -83,19 +97,28 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             playerAnimation.LandAnim(false);
-            InputController.instance.canPress = false;
+            if (playerAnimation.IfCurrentAnimationIsPlaying("Armed-Jump"))
+            {
+                InputController.instance.canPress = false;
+            }
+
         }
     }
 
     private void FixedUpdate()
     {
+        if (_freeze || !isMoving)
+        {
+            return;
+        }
+
         if (InputController.instance.isBlocking && playerAnimation.IfCurrentAnimationIsPlaying("Shield-Block") || playerAnimation.IfCurrentAnimationIsPlaying("Shield-Walk-Slow-Block"))
         {
-            _rb.MovePosition(_rb.position + _inputs * walkSpeed * Time.fixedDeltaTime);
+            _rb.MovePosition(_rb.position + targetDirection  * walkSpeed * Time.fixedDeltaTime);
         }
         else
         {
-            _rb.MovePosition(_rb.position + _inputs * runSpeed * Time.fixedDeltaTime);
+            _rb.MovePosition(_rb.position + targetDirection * runSpeed * Time.fixedDeltaTime);
         }
     }
     #endregion

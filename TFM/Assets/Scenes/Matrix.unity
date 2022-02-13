@@ -577,6 +577,7 @@ MonoBehaviour:
   radiusChecker: 0.05
   showGroundChecker: 1
   cam: {fileID: 963194228}
+  camFreeLook: {fileID: 1712568355}
   isMoving: 0
   isInFloor: 0
 --- !u!114 &122964746

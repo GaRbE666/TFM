@@ -13,7 +13,7 @@ public class InputController : MonoBehaviour
     [HideInInspector] public bool isBlocking;
     [HideInInspector] public bool isAttacking;
     [HideInInspector] public bool isRolling;
-    [HideInInspector] public bool canPress;
+    /*[HideInInspector]*/ public bool canPress;
     [HideInInspector] public bool isStrongAttacking;
 
     private void Awake()
