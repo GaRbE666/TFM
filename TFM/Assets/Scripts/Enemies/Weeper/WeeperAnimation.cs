@@ -15,6 +15,7 @@ public class WeeperAnimation : MonoBehaviour
     private int attack2 = Animator.StringToHash("attack2");
     private int attack3 = Animator.StringToHash("attack3");
     private int attack4 = Animator.StringToHash("attack4");
+    private int canFinishAttack = Animator.StringToHash("canFinishAttack");
     #endregion
 
     #region METHODS
@@ -22,6 +23,16 @@ public class WeeperAnimation : MonoBehaviour
     public void DodgeAnim()
     {
         animator.SetTrigger(dodge);
+    }
+
+    public void FinishAttackAnim()
+    {
+        animator.SetBool(canFinishAttack, true);
+    }
+
+    public void CantFinishAttackAnim()
+    {
+        animator.SetBool(canFinishAttack, false);
     }
 
     public void AttackAnim(int numAttack)
