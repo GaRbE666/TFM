@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeeperAnimation : MonoBehaviour
 {
     #region FIELDS
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator weeperAnimator;
 
     private int walk = Animator.StringToHash("walk");
     private int death = Animator.StringToHash("death");
@@ -20,19 +20,24 @@ public class WeeperAnimation : MonoBehaviour
 
     #region METHODS
 
+    public bool IfCurrentAnimationIsPlaying(string animationName)
+    {
+        return weeperAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
     public void DodgeAnim()
     {
-        animator.SetTrigger(dodge);
+        weeperAnimator.SetTrigger(dodge);
     }
 
     public void FinishAttackAnim()
     {
-        animator.SetBool(canFinishAttack, true);
+        weeperAnimator.SetBool(canFinishAttack, true);
     }
 
     public void CantFinishAttackAnim()
     {
-        animator.SetBool(canFinishAttack, false);
+        weeperAnimator.SetBool(canFinishAttack, false);
     }
 
     public void AttackAnim(int numAttack)
@@ -40,38 +45,38 @@ public class WeeperAnimation : MonoBehaviour
         switch (numAttack)
         {
             case 1:
-                animator.SetTrigger(attack1);
+                weeperAnimator.SetTrigger(attack1);
                 break;
             case 2:
-                animator.SetTrigger(attack2);
+                weeperAnimator.SetTrigger(attack2);
                 break;
             case 3:
-                animator.SetTrigger(attack3);
+                weeperAnimator.SetTrigger(attack3);
                 break;
             case 4:
-                animator.SetTrigger(attack4);
+                weeperAnimator.SetTrigger(attack4);
                 break;
         }
     }
 
     public void HitAnim()
     {
-        animator.SetTrigger(hit);
+        weeperAnimator.SetTrigger(hit);
     }
 
     public void DeathAnim()
     {
-        animator.SetTrigger(death);
+        weeperAnimator.SetTrigger(death);
     }
 
     public void WalkAnim()
     {
-        animator.SetBool(walk, true);
+        weeperAnimator.SetBool(walk, true);
     }
 
     public void StopWalkAnim()
     {
-        animator.SetBool(walk, false);
+        weeperAnimator.SetBool(walk, false);
     }
     #endregion
 }

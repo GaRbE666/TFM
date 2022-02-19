@@ -9,17 +9,23 @@ public class WeeperAttack : MonoBehaviour
     [SerializeField] private WeeperMovement weeperMovement;
     [SerializeField] private WeeperAnimation weeperAnimation;
     [SerializeField] private Transform target;
-    [SerializeField] private GameObject attack1;
-    [SerializeField] private GameObject attack2;
-    [SerializeField] private Transform startPointAttack1;
+    //[SerializeField] private GameObject attack1;
+    //[SerializeField] private GameObject attack2;
+    //[SerializeField] private Transform startPointAttack1;
 
     [Header("Attack Config")]
     [Tooltip("Valor del daño que hace el enemigo")]
     [SerializeField] private float damage;
     [SerializeField] private float maxTimeToNextAttack;
     [SerializeField] private float minTimeToNextAttack;
-    [Tooltip("Tiempo que la animación se queda atacando hasta que finaliza el ataque")]
-    [SerializeField] private float timeLoopAttack;
+    //[Tooltip("Tiempo que la animación se queda atacando hasta que finaliza el ataque")]
+    //[SerializeField] private float timeLoopAttack;
+
+    [Header("Debug Config")]
+    [Tooltip("Selecciona esta opción para que el enemigo repita indefinidamente el ataque que eligas")]
+    [SerializeField] private bool forceAttack;
+    [Range(1, 4)] [Tooltip("Elige que ataque quieres que se repita")]
+    [SerializeField] private int doThisAttack;
 
     private bool _canAttack;
     private const int MIN_ATTACK = 1;
@@ -36,32 +42,22 @@ public class WeeperAttack : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, target.position) <= weeperMovement.stoppingDistance && _canAttack && !weeperMovement.isMoving)
         {
+
             _canAttack = false;
-            weeperAnimation.AttackAnim(1/*GenerateRandomAttack()*/);
+            if (forceAttack)
+            {
+                weeperAnimation.AttackAnim(doThisAttack);
+            }
+            else
+            {
+                weeperAnimation.AttackAnim(GenerateRandomAttack());
+            }
         }
     }
 
-    public void TimeToCanFinishAttack()
-    {
-        if (_isLoopin)
-        {
-            return;
-        }
-        StartCoroutine(TimeToStopAttack());
-    }
+    #region CUSTOM METHODS
 
-    private IEnumerator TimeToStopAttack()
-    {
-        _isLoopin = true;
-        weeperAnimation.CantFinishAttackAnim();
-        LaunchAttack2();
-        yield return new WaitForSeconds(timeLoopAttack);
-        weeperAnimation.FinishAttackAnim();
-        _isLoopin = false;
-
-    }
-
-    public void CanAttackAgain()
+    public void CanAttackAgain() //Method called from AnimationEvent Cast02End
     {
         StartCoroutine(WaitForNextAttack());
     }
@@ -82,14 +78,9 @@ public class WeeperAttack : MonoBehaviour
         return Random.Range(minTimeToNextAttack, maxTimeToNextAttack);
     }
 
-    public void LaunchAttack1()
-    {
-        Debug.Log("ataque 1");
-        Instantiate(attack1, startPointAttack1.position, transform.rotation);
-    }
-
-    private void LaunchAttack2()
-    {
-        Instantiate(attack2, target.position, Quaternion.identity);
-    }
+    //public void LaunchAttack1()
+    //{
+    //    Instantiate(attack1, startPointAttack1.position, transform.rotation);
+    //}
+    #endregion
 }
