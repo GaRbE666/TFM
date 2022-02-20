@@ -73,6 +73,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""RecenterCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""312036bf-f9de-4c82-b736-8a975ea6f27a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -273,6 +281,17 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""SwitchWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""622fc522-cd7d-4d42-b25a-e6ea641cb5d8"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RecenterCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -311,6 +330,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
         m_Player_StrongAttack = m_Player.FindAction("StrongAttack", throwIfNotFound: true);
         m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
+        m_Player_RecenterCamera = m_Player.FindAction("RecenterCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -367,6 +387,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Roll;
     private readonly InputAction m_Player_StrongAttack;
     private readonly InputAction m_Player_SwitchWeapon;
+    private readonly InputAction m_Player_RecenterCamera;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -378,6 +399,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Roll => m_Wrapper.m_Player_Roll;
         public InputAction @StrongAttack => m_Wrapper.m_Player_StrongAttack;
         public InputAction @SwitchWeapon => m_Wrapper.m_Player_SwitchWeapon;
+        public InputAction @RecenterCamera => m_Wrapper.m_Player_RecenterCamera;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -408,6 +430,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @SwitchWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapon;
                 @SwitchWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapon;
                 @SwitchWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchWeapon;
+                @RecenterCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecenterCamera;
+                @RecenterCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecenterCamera;
+                @RecenterCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRecenterCamera;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -433,6 +458,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @SwitchWeapon.started += instance.OnSwitchWeapon;
                 @SwitchWeapon.performed += instance.OnSwitchWeapon;
                 @SwitchWeapon.canceled += instance.OnSwitchWeapon;
+                @RecenterCamera.started += instance.OnRecenterCamera;
+                @RecenterCamera.performed += instance.OnRecenterCamera;
+                @RecenterCamera.canceled += instance.OnRecenterCamera;
             }
         }
     }
@@ -464,5 +492,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnRoll(InputAction.CallbackContext context);
         void OnStrongAttack(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
+        void OnRecenterCamera(InputAction.CallbackContext context);
     }
 }

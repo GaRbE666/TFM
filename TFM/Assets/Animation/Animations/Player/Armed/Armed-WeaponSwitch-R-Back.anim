@@ -80204,7 +80204,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.42635548
-    functionName: SelectedWeapon
+    functionName: ChangeWeapon
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

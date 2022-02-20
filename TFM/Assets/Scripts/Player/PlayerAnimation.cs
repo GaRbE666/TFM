@@ -83,18 +83,18 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetBool(_land, isInFloor);
     }
 
-    private void FinishAttackAnim()
-    {
-        InputController.instance.isAttacking = false;
-    }
+    //private void FinishAttackAnim()
+    //{
+    //    InputController.instance.isAttacking = false;
+    //}
 
-    private void FinishJumpAnim()
-    {
-        InputController.instance.isJumping = false;
-    }
+    //private void FinishJumpAnim()
+    //{
+    //    InputController.instance.isJumping = false;
+    //}
 
-    private void FinishRollAnim()
-    {   
-        InputController.instance.isRolling = false;
-    }
+    //private void FinishRollAnim()
+    //{   
+    //    InputController.instance.isRolling = false;
+    //}
 }

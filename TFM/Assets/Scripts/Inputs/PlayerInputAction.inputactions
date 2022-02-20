@@ -60,6 +60,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "RecenterCamera",
+                    "type": "Button",
+                    "id": "312036bf-f9de-4c82-b736-8a975ea6f27a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -258,6 +266,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "SwitchWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "622fc522-cd7d-4d42-b25a-e6ea641cb5d8",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RecenterCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -4,55 +4,73 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private PlayerAnimation playerAnimation;
+    #region FIELDS
+    //[SerializeField] private Weapon swordScriptable;
+    [SerializeField] private bool canHurt;
+    [SerializeField] private PlayerWeapon weapons;
+    [SerializeField] private PlayerAnimation _playerAnimation;
+    #endregion
 
-    private void Awake()
-    {
-        playerAnimation = GetComponent<PlayerAnimation>();
-    }
+    #region UNITY METHODS
+    //private void Awake()
+    //{
+    //    _playerAnimation = transform.parent.gameObject.GetComponent<PlayerAnimation>();
+    //}
 
     private void Update()
     {
-        if (InputController.instance.isAttacking)
+        if (InputController.instance.isAttacking && InputController.instance.canPress)
         {
             Attack();
         }
 
-        if (InputController.instance.isStrongAttacking)
+        if (InputController.instance.isStrongAttacking && InputController.instance.canPress)
         {
             StrongAttack();
         }
-
-        if (InputController.instance.isBlocking)
-        {
-            Block();
-        }
-        else
-        {
-            Unblock();
-        }
-
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 8 && canHurt)
+        {
+            Debug.Log(weapons.activeWeapon.damage);
+            //WeeperHealth weeperHealth = other.GetComponent<WeeperHealth>();
+            //weeperHealth.TakeDamage(CalculateDamage());
+        }
+    }
+    #endregion
+
+    #region CUSTOM METHODS
+
+    //private float CalculateDamage()
+    //{
+    //    float totalDamage;
+    //    totalDamage = weapons.activeWeapon.damage;
+    //    return totalDamage;
+    //}
 
     private void StrongAttack()
     {
-        playerAnimation.StrongAttackAnim();
+        _playerAnimation.StrongAttackAnim();
         InputController.instance.isStrongAttacking = false;
     }
 
     private void Attack()
     {
-        playerAnimation.AttackAnim();
+        _playerAnimation.AttackAnim();
         InputController.instance.isAttacking = false;
     }
 
-    private void Unblock()
+    public void PlayerCanHurt()
     {
-        playerAnimation.BlockAnim(false);
+        canHurt = true;
     }
 
-    private void Block()
+    public void PlayerCanNotHurt()
     {
-        playerAnimation.BlockAnim(true);
+        canHurt = false;
     }
+    #endregion
 }

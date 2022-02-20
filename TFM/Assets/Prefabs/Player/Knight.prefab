@@ -306,7 +306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3166995337557053634
 Transform:
   m_ObjectHideFlags: 0
@@ -2756,6 +2756,7 @@ GameObject:
   - component: {fileID: 3169908012916069438}
   - component: {fileID: 3169908012916069439}
   - component: {fileID: 3712843763898765569}
+  - component: {fileID: 5823252573474949807}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Player
@@ -2885,6 +2886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd1fb6f536544a4bb40e1f317637b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAnimation: {fileID: 0}
 --- !u!114 &3169908012916069438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2933,6 +2935,19 @@ MonoBehaviour:
   weaponScriptable: {fileID: 11400000, guid: ecf728f036f2de44a862dded5e87dc73, type: 2}
   handOfArms: {fileID: 9107355444292666788}
   selectedWeapon: 0
+--- !u!114 &5823252573474949807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169908012916069427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5c4848352aacaa4d9b0fbb3c84dd579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimation: {fileID: 3169908012916069432}
 --- !u!1 &3169908012931595512
 GameObject:
   m_ObjectHideFlags: 0
@@ -3260,7 +3275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9107355444292666788}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Weapons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

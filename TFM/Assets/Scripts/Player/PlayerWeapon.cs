@@ -6,11 +6,12 @@ public class PlayerWeapon : MonoBehaviour
 {
     #region FIELDS
     [SerializeField] private PlayerAnimation playerAnimation;
-    [SerializeField] private Weapon weaponScriptable;
+
     [SerializeField] private Transform handOfArms;
     [SerializeField] private int selectedWeapon;
 
     private bool _canSwitch;
+    [HideInInspector] public Weapon activeWeapon;
     #endregion
 
     #region UNITY METHODS
@@ -18,22 +19,29 @@ public class PlayerWeapon : MonoBehaviour
     {
         _canSwitch = true;
         selectedWeapon = 0;
+        TouringTheWeapon();
     }
 
     private void Update()
     {
         if (InputController.instance.isSwitchingWeapon && _canSwitch)
         {
-            _canSwitch = false;
-            playerAnimation.SwitchWeaponAnim();
+            SwitchWeapon();
         }
     }
     #endregion
 
     #region CUSTOM METHODS
-    public void SelectedWeapon()
+
+    private void SwitchWeapon()
     {
+        _canSwitch = false;
         InputController.instance.isSwitchingWeapon = false;
+        playerAnimation.SwitchWeaponAnim();
+    }
+
+    public void ChangeWeapon() //Method called by AnimatorEvent Armed-WeaponSwitch-R-Back
+    {
         if (selectedWeapon >= handOfArms.childCount - 1)
         {
             selectedWeapon = 0;
@@ -43,15 +51,11 @@ public class PlayerWeapon : MonoBehaviour
             selectedWeapon++;
         }
 
-        //if (selectedWeapon == 0)
-        //{
-        //    selectedWeapon = 1;
-        //}else if (selectedWeapon == 1)
-        //{
-        //    selectedWeapon = 0;
-        //}
+        TouringTheWeapon();
+    }
 
-
+    private void TouringTheWeapon()
+    {
         int i = 0;
 
         foreach (Transform weapon in handOfArms)
@@ -59,6 +63,8 @@ public class PlayerWeapon : MonoBehaviour
             if (i == selectedWeapon)
             {
                 weapon.gameObject.SetActive(true);
+                Debug.Log("arma acctivada");
+                activeWeapon = weapon.GetComponent<Arma>().weaponScriptable;
             }
             else
             {

@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         InputController.instance.isJumping = false;
     }
 
-    private bool GroundChecker()
+    public bool GroundChecker()
     {
         return Physics.CheckSphere(groundChecker.position, radiusChecker, groundLayer, QueryTriggerInteraction.Ignore);
     }

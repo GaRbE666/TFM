@@ -13,9 +13,9 @@ public class InputController : MonoBehaviour
     [HideInInspector] public bool isBlocking;
     [HideInInspector] public bool isAttacking;
     [HideInInspector] public bool isRolling;
-    [HideInInspector] public bool canPress;
+    /*[HideInInspector]*/ public bool canPress;
     [HideInInspector] public bool isStrongAttacking;
-    /*[HideInInspector]*/ public bool isSwitchingWeapon;
+    [HideInInspector] public bool isSwitchingWeapon;
 
     private void Awake()
     {
@@ -48,22 +48,11 @@ public class InputController : MonoBehaviour
 
     public void SwitchRightWeapon(InputAction.CallbackContext context)
     {
-        if (!canPress || isBlocking || isJumping || isRolling || isAttacking)
+        if (!canPress)
         {
             return;
         }
-
         isSwitchingWeapon = true;
-    }
-
-    public void StrongAttackIsPressed(InputAction.CallbackContext context)
-    {
-        if (!canPress || isBlocking)
-        {
-            return;
-        }
-
-        isStrongAttacking = true;
     }
 
     public void RollIsPressed(InputAction.CallbackContext context)
@@ -93,12 +82,22 @@ public class InputController : MonoBehaviour
     public void AttackIsPressed(InputAction.CallbackContext context)
     {
 
-        if (!canPress || isBlocking)
+        if (!canPress || !playerMovement.GroundChecker())
         {
             return;
         }
 
         isAttacking = true;
+    }
+
+    public void StrongAttackIsPressed(InputAction.CallbackContext context)
+    {
+        if (!canPress || isBlocking)
+        {
+            return;
+        }
+
+        isStrongAttacking = true;
     }
 
     public Vector2 GetReadValueFromInput()
