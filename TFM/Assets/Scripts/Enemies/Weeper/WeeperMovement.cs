@@ -6,10 +6,18 @@ using UnityEngine.AI;
 public class WeeperMovement : MonoBehaviour
 {
     #region FIELDS
+    [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private WeeperAnimation weeperAnimation;
-    [SerializeField] private float distanceTofollow;
+    [SerializeField] private WeeperAttack weeperAttack;
+
+    [Header("Config")]
+    [SerializeField] private float distanceToFollow;
+
+    [Header("Debug Config")]
     [SerializeField] private bool canDraw;
+    [SerializeField] private Color reachableObjetive;
+    [SerializeField] private Color nonReachableObjetive;
 
     private NavMeshAgent _navMeshAgent;
     [HideInInspector] public float stoppingDistance;
@@ -28,7 +36,7 @@ public class WeeperMovement : MonoBehaviour
 
     void Update()
     {
-        if (CheckDistance() && !CheckDistance(_navMeshAgent.stoppingDistance))
+        if (CheckDistance() && !CheckDistance(_navMeshAgent.stoppingDistance) && !weeperAttack.isAttacking)
         {
             isMoving = true;
             weeperAnimation.WalkAnim();
@@ -45,7 +53,7 @@ public class WeeperMovement : MonoBehaviour
 
     private bool CheckDistance()
     {
-        return Vector3.Distance(transform.position, player.position) < distanceTofollow;
+        return Vector3.Distance(transform.position, player.position) < distanceToFollow;
     }
 
     private bool CheckDistance(float ditanceToCompare)
@@ -57,16 +65,16 @@ public class WeeperMovement : MonoBehaviour
     {
         if (canDraw)
         {
-            if (Vector3.Distance(transform.position, player.position) > distanceTofollow)
+            float distance = Vector3.Distance(transform.position, player.position);
+            if (distance > distanceToFollow)
             {
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(transform.position, player.position);
+                Gizmos.color = nonReachableObjetive;
             }
             else
             {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(transform.position, player.position);
-            }   
+                Gizmos.color = reachableObjetive;
+            }
+            Gizmos.DrawWireSphere(transform.position, distance);
         }
     }
 }

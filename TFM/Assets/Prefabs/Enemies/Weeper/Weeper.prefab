@@ -2891,6 +2891,11 @@ GameObject:
   - component: {fileID: 2238921463909072118}
   - component: {fileID: 2238921463909072112}
   - component: {fileID: 2458608114330580779}
+  - component: {fileID: 3932001221587757353}
+  - component: {fileID: 1309953647228430754}
+  - component: {fileID: 6948508934066819003}
+  - component: {fileID: 633228404497916368}
+  - component: {fileID: 6428668455246169023}
   m_Layer: 0
   m_Name: Weeper
   m_TagString: Untagged
@@ -2916,6 +2921,8 @@ Transform:
   - {fileID: 2238921463909032105}
   - {fileID: 2238921463909032157}
   - {fileID: 2238921463909031939}
+  - {fileID: 782230001977994885}
+  - {fileID: 1700169969856165021}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2988,8 +2995,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   weeperAnimation: {fileID: 2238921463909072112}
-  distanceTofollow: 20
+  weeperAttack: {fileID: 0}
+  distanceToFollow: 0
   canDraw: 1
+  reachableObjetive: {r: 0, g: 0, b: 0, a: 0}
+  nonReachableObjetive: {r: 0, g: 0, b: 0, a: 0}
   stoppingDistance: 0
   isMoving: 0
 --- !u!114 &2238921463909072112
@@ -3004,7 +3014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a1486e9340357479f62165fd25ae04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 2238921463918579441}
+  weeperAnimator: {fileID: 2238921463918579441}
 --- !u!114 &2458608114330580779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3019,16 +3029,102 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weeperMovement: {fileID: 2238921463909072118}
   weeperAnimation: {fileID: 2238921463909072112}
+  weeperHealth: {fileID: 0}
   target: {fileID: 0}
-  attack1: {fileID: 9041572422624549108, guid: e690f01b561cb6942b0aea7cb6c313c6, type: 3}
-  attack2: {fileID: 554618883413658960, guid: 22d8dedeac5121645a0f9d2bca0e71bc, type: 3}
-  startPointAttack1: {fileID: 0}
   damage: 10
   maxTimeToNextAttack: 1
   minTimeToNextAttack: 3
+  forceAttack: 1
+  doThisAttack: 4
+  canDraw: 0
+  reachableObjetive: {r: 0, g: 0, b: 0, a: 0}
+  nonReachableObjetive: {r: 0, g: 0, b: 0, a: 0}
+  isAttacking: 0
+--- !u!114 &3932001221587757353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238921463909072075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28aadf8ed63e3b4fa93b90b3134674f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weeperAnimation: {fileID: 2238921463909072112}
+  misileObject: {fileID: 554618883413658960, guid: 22d8dedeac5121645a0f9d2bca0e71bc, type: 3}
+  target: {fileID: 0}
   timeLoopAttack: 5
-  forceAttack: 0
-  doThisAttack: 1
+  timeToFaceTarget: 2
+--- !u!114 &1309953647228430754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238921463909072075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bd3840f26c815449bb48daf2fb64c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weeperAnimation: {fileID: 2238921463909072112}
+  swordAttack: {fileID: 5921197867985272257, guid: 9d3d658504c896c448a616658632b0ed, type: 3}
+  target: {fileID: 0}
+  timeLoopAttack: 5
+  timeToFaceTarget: 2
+--- !u!114 &6948508934066819003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238921463909072075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8a87216d6d6b246b352f8ff66b43bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weeperAnimation: {fileID: 2238921463909072112}
+  target: {fileID: 0}
+  holyShoot: {fileID: 9041572422624549108, guid: e690f01b561cb6942b0aea7cb6c313c6, type: 3}
+  startPointAttack: {fileID: 0}
+  timeToFaceTarget: 2
+--- !u!114 &633228404497916368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238921463909072075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd62d52e0484e843b49914dd8f10907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weeperAnimation: {fileID: 2238921463909072112}
+  target: {fileID: 0}
+  arrowEmission: {fileID: 2177396950736681334, guid: 1fa94877a9c3932409a3f81d0c3e0dea, type: 3}
+  startPointAttack: {fileID: 0}
+  timeToFaceTarget: 2
+  _canRotateToTarget: 0
+--- !u!114 &6428668455246169023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238921463909072075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2976332429026741a9786b85dfa6573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weeperAnimaton: {fileID: 2238921463909072112}
+  maxHealth: 300
+  currentHealth: 0
+  isDead: 0
 --- !u!1 &2238921463909072077
 GameObject:
   m_ObjectHideFlags: 0
@@ -4802,3 +4898,63 @@ Transform:
   m_Father: {fileID: 2238921463909032217}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: -20.759136, y: 170.3441, z: -133.04697}
+--- !u!1 &3262306637874550549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 782230001977994885}
+  m_Layer: 0
+  m_Name: Attack1StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &782230001977994885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262306637874550549}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3595, y: 1.3965093, z: 0.9285}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2238921463909032107}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3448003741546367665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1700169969856165021}
+  m_Layer: 0
+  m_Name: Attack3StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1700169969856165021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448003741546367665}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.035, y: 1.3965093, z: 0.9285}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2238921463909032107}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

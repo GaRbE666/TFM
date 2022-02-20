@@ -167,7 +167,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void UnFreezePlayer()
     {
-        Debug.Log("Unfreeze personaje");
         _freeze = false;
         InputController.instance.canPress = true;
     }

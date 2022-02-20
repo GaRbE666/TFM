@@ -13,8 +13,9 @@ public class InputController : MonoBehaviour
     [HideInInspector] public bool isBlocking;
     [HideInInspector] public bool isAttacking;
     [HideInInspector] public bool isRolling;
-    /*[HideInInspector]*/ public bool canPress;
+    [HideInInspector] public bool canPress;
     [HideInInspector] public bool isStrongAttacking;
+    /*[HideInInspector]*/ public bool isSwitchingWeapon;
 
     private void Awake()
     {
@@ -37,11 +38,22 @@ public class InputController : MonoBehaviour
         playerInputAction.Player.Attack.started += AttackIsPressed;
         playerInputAction.Player.Roll.started += RollIsPressed;
         playerInputAction.Player.StrongAttack.started += StrongAttackIsPressed;
+        playerInputAction.Player.SwitchWeapon.started += SwitchRightWeapon;
     }
 
     private void Start()
     {
         canPress = true;
+    }
+
+    public void SwitchRightWeapon(InputAction.CallbackContext context)
+    {
+        if (!canPress || isBlocking || isJumping || isRolling || isAttacking)
+        {
+            return;
+        }
+
+        isSwitchingWeapon = true;
     }
 
     public void StrongAttackIsPressed(InputAction.CallbackContext context)
@@ -56,10 +68,6 @@ public class InputController : MonoBehaviour
 
     public void RollIsPressed(InputAction.CallbackContext context)
     {
-        //if (isJumping || isAttacking || isRolling)
-        //{
-        //    return;
-        //}
 
         if (!canPress || isJumping)
         {
@@ -84,10 +92,6 @@ public class InputController : MonoBehaviour
 
     public void AttackIsPressed(InputAction.CallbackContext context)
     {
-        //if (isBlocking || isJumping || isAttacking)
-        //{
-        //    return;
-        //}
 
         if (!canPress || isBlocking)
         {
@@ -104,10 +108,6 @@ public class InputController : MonoBehaviour
 
     public void JumpIsPressed(InputAction.CallbackContext context)
     {
-        //if (isBlocking || isRolling || isAttacking || isJumping)
-        //{
-        //    return;
-        //}
 
         if (!canPress || isBlocking)
         {
@@ -141,13 +141,13 @@ public class InputController : MonoBehaviour
         isBlocking = false;
     }
 
-    private void BlockPressButton()
-    {
-        canPress = false;
-    }
+    //private void BlockPressButton()
+    //{
+    //    canPress = false;
+    //}
 
-    private void UnlockPressButton()
-    {
-        canPress = true;
-    }
+    //private void UnlockPressButton()
+    //{
+    //    canPress = true;
+    //}
 }

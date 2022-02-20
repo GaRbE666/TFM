@@ -19,6 +19,7 @@ public class PlayerAnimation : MonoBehaviour
     private int _rollBack = Animator.StringToHash("rollBack");
     private int _rollForward = Animator.StringToHash("rollForward");
     private int _strongAttack = Animator.StringToHash("strongAttack");
+    private int _switchWeapon = Animator.StringToHash("switchWeapon");
     #endregion
 
     private void Update()
@@ -30,6 +31,11 @@ public class PlayerAnimation : MonoBehaviour
     public bool IfCurrentAnimationIsPlaying(string animationName)
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
+    public void SwitchWeaponAnim()
+    {
+        playerAnimator.SetTrigger(_switchWeapon);
     }
 
     public void StrongAttackAnim()

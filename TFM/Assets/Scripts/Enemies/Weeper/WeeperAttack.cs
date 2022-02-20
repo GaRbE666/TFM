@@ -8,29 +8,29 @@ public class WeeperAttack : MonoBehaviour
     [Header("References")]
     [SerializeField] private WeeperMovement weeperMovement;
     [SerializeField] private WeeperAnimation weeperAnimation;
+    [SerializeField] private WeeperHealth weeperHealth;
     [SerializeField] private Transform target;
-    //[SerializeField] private GameObject attack1;
-    //[SerializeField] private GameObject attack2;
-    //[SerializeField] private Transform startPointAttack1;
 
     [Header("Attack Config")]
     [Tooltip("Valor del daño que hace el enemigo")]
     [SerializeField] private float damage;
     [SerializeField] private float maxTimeToNextAttack;
     [SerializeField] private float minTimeToNextAttack;
-    //[Tooltip("Tiempo que la animación se queda atacando hasta que finaliza el ataque")]
-    //[SerializeField] private float timeLoopAttack;
 
     [Header("Debug Config")]
     [Tooltip("Selecciona esta opción para que el enemigo repita indefinidamente el ataque que eligas")]
     [SerializeField] private bool forceAttack;
     [Range(1, 4)] [Tooltip("Elige que ataque quieres que se repita")]
     [SerializeField] private int doThisAttack;
+    [Tooltip("Dibuja el radio de ataque")]
+    [SerializeField] private bool canDraw;
+    [SerializeField] private Color reachableObjetive;
+    [SerializeField] private Color nonReachableObjetive;
 
+    [HideInInspector] public bool isAttacking;
     private bool _canAttack;
     private const int MIN_ATTACK = 1;
     private const int MAX_ATTACK = 4;
-    private bool _isLoopin;
     #endregion
 
     private void Start()
@@ -40,9 +40,24 @@ public class WeeperAttack : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, target.position) <= weeperMovement.stoppingDistance && _canAttack && !weeperMovement.isMoving)
+        if (weeperHealth.isDead)
         {
+            return;
+        }
 
+        if (!_canAttack)
+        {
+            return;
+        }
+
+        if (weeperMovement.isMoving)
+        {
+            return;
+        }
+
+        if (CheckDistance())
+        {
+            isAttacking = true;
             _canAttack = false;
             if (forceAttack)
             {
@@ -56,9 +71,14 @@ public class WeeperAttack : MonoBehaviour
     }
 
     #region CUSTOM METHODS
-
-    public void CanAttackAgain() //Method called from AnimationEvent Cast02End
+    private bool CheckDistance()
     {
+        return Vector3.Distance(transform.position, target.position) <= weeperMovement.stoppingDistance;
+    }
+
+    public void CanAttackAgain() //Method called from AnimationEvent
+    {
+        isAttacking = false;
         StartCoroutine(WaitForNextAttack());
     }
 
@@ -77,10 +97,25 @@ public class WeeperAttack : MonoBehaviour
     {
         return Random.Range(minTimeToNextAttack, maxTimeToNextAttack);
     }
+    #endregion
 
-    //public void LaunchAttack1()
-    //{
-    //    Instantiate(attack1, startPointAttack1.position, transform.rotation);
-    //}
+    #region DEBUG METHODS
+    private void OnDrawGizmos()
+    {
+        if (canDraw)
+        {
+            float distance = Vector3.Distance(transform.position, target.position);
+
+            if (distance <= weeperMovement.stoppingDistance)
+            {
+                Gizmos.color = reachableObjetive;
+            }
+            else
+            {
+                Gizmos.color = nonReachableObjetive;
+            }
+            Gizmos.DrawWireSphere(transform.position, weeperMovement.stoppingDistance);
+        }
+    }
     #endregion
 }
