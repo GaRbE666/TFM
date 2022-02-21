@@ -59,8 +59,7 @@ public class PlayerMovement : MonoBehaviour
         if (_inputs != Vector3.zero)
         {
             isMoving = true;
-
-
+            playerAnimation.MoveAnim();
             _targetRotation = Mathf.Atan2(_inputs.x, _inputs.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
 
@@ -72,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isMoving = false;
+            playerAnimation.NotMoveAnim();
         }
 
         if (InputController.instance.isJumping && GroundChecker())

@@ -6,9 +6,6 @@ public class PlayerAnimation : MonoBehaviour
 {
     #region "FIELDS"
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private PlayerAttack playerAttack;
 
     private int _move = Animator.StringToHash("move");
     private int _block = Animator.StringToHash("block");
@@ -22,12 +19,7 @@ public class PlayerAnimation : MonoBehaviour
     private int _switchWeapon = Animator.StringToHash("switchWeapon");
     #endregion
 
-    private void Update()
-    {
-        MoveAnim();
-        DeathAnim();
-    }
-
+    #region CUSTOM METHODS
     public bool IfCurrentAnimationIsPlaying(string animationName)
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
@@ -58,9 +50,14 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetBool(_block, isBlocking);
     }
 
-    private void MoveAnim()
+    public void MoveAnim()
     {
-        playerAnimator.SetBool(_move, playerMovement.isMoving);
+        playerAnimator.SetBool(_move, true);
+    }
+
+    public void NotMoveAnim()
+    {
+        playerAnimator.SetBool(_move, false);
     }
 
     public void JumpAnim()
@@ -68,9 +65,9 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetTrigger(_jump);
     }
 
-    private void DeathAnim()
+    public void DeathAnim()
     {
-        playerAnimator.SetBool(_death, playerHealth.death);
+        playerAnimator.SetTrigger(_death);
     }
 
     public void AttackAnim()
@@ -82,7 +79,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         playerAnimator.SetBool(_land, isInFloor);
     }
-
+    #endregion
     //private void FinishAttackAnim()
     //{
     //    InputController.instance.isAttacking = false;

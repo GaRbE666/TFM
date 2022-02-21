@@ -35,7 +35,6 @@ public class PlayerAttack : MonoBehaviour
     {
         if (other.gameObject.layer == 8 && canHurt)
         {
-            Debug.Log(weapons.activeWeapon.damage);
             //WeeperHealth weeperHealth = other.GetComponent<WeeperHealth>();
             //weeperHealth.TakeDamage(CalculateDamage());
         }
@@ -44,12 +43,12 @@ public class PlayerAttack : MonoBehaviour
 
     #region CUSTOM METHODS
 
-    //private float CalculateDamage()
-    //{
-    //    float totalDamage;
-    //    totalDamage = weapons.activeWeapon.damage;
-    //    return totalDamage;
-    //}
+    private float CalculateDamage()
+    {
+        float totalDamage;
+        totalDamage = weapons.activeWeapon.damage;
+        return totalDamage;
+    }
 
     private void StrongAttack()
     {

@@ -55,7 +55,7 @@ public class WeeperAttack : MonoBehaviour
             return;
         }
 
-        if (CheckDistance())
+        if (CheckDistance(weeperMovement.stoppingDistance))
         {
             isAttacking = true;
             _canAttack = false;
@@ -71,9 +71,9 @@ public class WeeperAttack : MonoBehaviour
     }
 
     #region CUSTOM METHODS
-    private bool CheckDistance()
+    private bool CheckDistance(float distance)
     {
-        return Vector3.Distance(transform.position, target.position) <= weeperMovement.stoppingDistance;
+        return Vector3.Distance(transform.position, target.position) <= distance;
     }
 
     public void CanAttackAgain() //Method called from AnimationEvent

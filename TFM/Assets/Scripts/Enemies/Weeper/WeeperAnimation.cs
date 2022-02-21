@@ -18,8 +18,7 @@ public class WeeperAnimation : MonoBehaviour
     private int canFinishAttack = Animator.StringToHash("canFinishAttack");
     #endregion
 
-    #region METHODS
-
+    #region CUSTOM METHODS
     public bool IfCurrentAnimationIsPlaying(string animationName)
     {
         return weeperAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
