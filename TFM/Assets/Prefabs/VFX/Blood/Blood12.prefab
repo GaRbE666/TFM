@@ -1252,6 +1252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8859926575668995836}
   - component: {fileID: 5914805143651470744}
+  - component: {fileID: -7024350295191669886}
   m_Layer: 0
   m_Name: Blood12
   m_TagString: Untagged
@@ -1295,3 +1296,16 @@ MonoBehaviour:
   FreezeDecalDisappearance: 0
   DecalRenderinMode: 0
   ClampDecalSideSurface: 0
+--- !u!114 &-7024350295191669886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859926575668995837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356c5943bc291e34d8c3ee40298b4ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 3

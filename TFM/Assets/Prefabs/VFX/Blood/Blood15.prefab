@@ -367,6 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5371219466416337995}
   - component: {fileID: 6733599243507489090}
+  - component: {fileID: -8848485862870940702}
   m_Layer: 0
   m_Name: Blood15
   m_TagString: Untagged
@@ -409,6 +410,19 @@ MonoBehaviour:
   FreezeDecalDisappearance: 0
   DecalRenderinMode: 0
   ClampDecalSideSurface: 0
+--- !u!114 &-8848485862870940702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5371219466416337994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356c5943bc291e34d8c3ee40298b4ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 3
 --- !u!1 &7320868988218991578
 GameObject:
   m_ObjectHideFlags: 0

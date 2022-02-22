@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118898371229433452}
   - component: {fileID: 3823342610295537083}
+  - component: {fileID: -5678651362530783009}
   m_Layer: 0
   m_Name: Blood4
   m_TagString: Untagged
@@ -51,6 +52,19 @@ MonoBehaviour:
   FreezeDecalDisappearance: 0
   DecalRenderinMode: 0
   ClampDecalSideSurface: 0
+--- !u!114 &-5678651362530783009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165703760847671896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356c5943bc291e34d8c3ee40298b4ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 3
 --- !u!1 &2110413278928731068
 GameObject:
   m_ObjectHideFlags: 0
