@@ -7,6 +7,7 @@ public class WeeperHealth : MonoBehaviour
     #region FIELDS
     [Header("References")]
     [SerializeField] private WeeperAnimation weeperAnimaton;
+    [SerializeField] private BloodPrefabs bloodPrefab;
     [SerializeField] private CapsuleCollider[] weeperColliders;
 
     [Header("Parameters")]
@@ -29,6 +30,11 @@ public class WeeperHealth : MonoBehaviour
     {
         currentHealth -= damage;
         CheckIfIAmDead();
+    }
+
+    public void GenerateBlood(Transform hit)
+    {
+        bloodPrefab.InstantiateBlood(hit);
     }
 
     private void CheckIfIAmDead()

@@ -35,8 +35,10 @@ public class PlayerAttack : MonoBehaviour
     {
         if (other.gameObject.layer == 8 && canHurt)
         {
-            //WeeperHealth weeperHealth = other.GetComponent<WeeperHealth>();
-            //weeperHealth.TakeDamage(CalculateDamage());
+            Debug.Log(other.transform.root);
+            WeeperHealth weeperHealth = other.transform.root.GetComponent<WeeperHealth>();
+            weeperHealth.TakeDamage(CalculateDamage());
+            weeperHealth.GenerateBlood(other.transform);
         }
     }
     #endregion

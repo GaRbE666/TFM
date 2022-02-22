@@ -63,7 +63,6 @@ public class PlayerWeapon : MonoBehaviour
             if (i == selectedWeapon)
             {
                 weapon.gameObject.SetActive(true);
-                Debug.Log("arma acctivada");
                 activeWeapon = weapon.GetComponent<Arma>().weaponScriptable;
             }
             else

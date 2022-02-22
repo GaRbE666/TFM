@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CutoutTex:
-        m_Texture: {fileID: 2800000, guid: c80c6ba4565c34548a34d1b3e49b29d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: c9001234b61f2024f9cca4bc6ced610b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -48,11 +48,11 @@ Material:
         m_Scale: {x: 20, y: 10}
         m_Offset: {x: 0, y: 0}
     - _LookupFade:
-        m_Texture: {fileID: 2800000, guid: 9129d5611471ff949b0a50c65aeb5bd3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 51a8bbb8717b63c409ad24a0712bfe83, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 6d0e0bab50c3910419f8db90365c761c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 15b0f6fb91e5e4b499a5de998d28bd01, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex2:
@@ -115,3 +115,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SunPos: {r: 0.3, g: 0.6, b: 0.06, a: 0}
     - _TintColor: {r: 0.3679245, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
