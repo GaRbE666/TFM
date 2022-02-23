@@ -10,6 +10,7 @@ public class WeeperMovement : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private WeeperAnimation weeperAnimation;
     [SerializeField] private WeeperAttack weeperAttack;
+    [SerializeField] private WeeperHealth weeperHealth;
 
     [Header("Config")]
     [SerializeField] private float distanceToFollow;
@@ -45,6 +46,12 @@ public class WeeperMovement : MonoBehaviour
 
     void Update()
     {
+
+        if (weeperHealth.isDead)
+        {
+            return;
+        }
+
         if (weeperAttack.isAttacking)
         {
             return;
@@ -63,7 +70,7 @@ public class WeeperMovement : MonoBehaviour
             weeperAnimation.StopWalkAnim();
         }
 
-        if (CheckDistanceToPlayer(distanceToDodge) && _canDodge)
+        if (CheckDistanceToPlayer(distanceToDodge) && _canDodge && !weeperHealth.isGettingHurt)
         {
             StartCoroutine(DodgeCoroutine());
         } 

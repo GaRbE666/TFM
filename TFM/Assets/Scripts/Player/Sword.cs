@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arma : MonoBehaviour
+public class Sword : MonoBehaviour
 {
-    public Weapon weaponScriptable;
+    public Weapon scriptableWeapon;
 }

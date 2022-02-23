@@ -6,10 +6,14 @@ using UnityEngine;
 public class ArrowShoot : MonoBehaviour, IAttack
 {
     #region FIELDS
+    [Header("References")]
+    [SerializeField] private WeeperHealth weeperHealth;
     [SerializeField] private WeeperAnimation weeperAnimation;
     [SerializeField] private Transform target;
     [SerializeField] private GameObject arrowEmission;
     [SerializeField] private Transform startPointAttack;
+
+    [Header("Parameters")]
     [SerializeField] private float timeToFaceTarget;
 
     public bool _canRotateToTarget;
@@ -19,6 +23,11 @@ public class ArrowShoot : MonoBehaviour, IAttack
     private void FixedUpdate()
     {
         if (!_canRotateToTarget)
+        {
+            return;
+        }
+
+        if (weeperHealth.isDead)
         {
             return;
         }
@@ -35,6 +44,7 @@ public class ArrowShoot : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
+        Debug.Log("Rotate ARROWSHOOT");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }

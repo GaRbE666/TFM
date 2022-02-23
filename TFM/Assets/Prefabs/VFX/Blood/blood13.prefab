@@ -147,7 +147,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  GraphTimeMultiplier: 15
+  GraphTimeMultiplier: 5
   GraphIntensityMultiplier: 1
   TimeDelay: 0
 --- !u!114 &17221175798433833
@@ -490,7 +490,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  GraphTimeMultiplier: 15
+  GraphTimeMultiplier: 5
   GraphIntensityMultiplier: 1
   TimeDelay: 0
 --- !u!114 &113442005173303610
@@ -888,7 +888,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  GraphTimeMultiplier: 15
+  GraphTimeMultiplier: 5
   GraphIntensityMultiplier: 1
   TimeDelay: 0
 --- !u!114 &5369401798476747111
@@ -1135,7 +1135,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5936082179827903908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 356c5943bc291e34d8c3ee40298b4ffa, type: 3}
   m_Name: 

@@ -11,7 +11,8 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private int selectedWeapon;
 
     private bool _canSwitch;
-    [HideInInspector] public Weapon activeWeapon;
+    [HideInInspector] public Weapon scriptableActiveWeapon;
+    [HideInInspector] public GameObject activeWeapon;
     #endregion
 
     #region UNITY METHODS
@@ -63,7 +64,8 @@ public class PlayerWeapon : MonoBehaviour
             if (i == selectedWeapon)
             {
                 weapon.gameObject.SetActive(true);
-                activeWeapon = weapon.GetComponent<Arma>().weaponScriptable;
+                scriptableActiveWeapon = weapon.GetComponent<Sword>().scriptableWeapon;
+                activeWeapon = weapon.gameObject;
             }
             else
             {

@@ -5,10 +5,14 @@ using UnityEngine;
 public class HolyShoot : MonoBehaviour, IAttack
 {
     #region FIELDS
+    [Header("References")]
+    [SerializeField] private WeeperHealth weeperHealth;
     [SerializeField] private WeeperAnimation weeperAnimation;
     [SerializeField] private Transform target;
     [SerializeField] private GameObject holyShoot;
     [SerializeField] private Transform startPointAttack;
+
+    [Header("Parameters")]
     [SerializeField] private float timeToFaceTarget;
 
     private bool _canRotateToTarget;
@@ -18,6 +22,11 @@ public class HolyShoot : MonoBehaviour, IAttack
     private void FixedUpdate()
     {
         if (!_canRotateToTarget)
+        {
+            return;
+        }
+
+        if (weeperHealth.isDead)
         {
             return;
         }
@@ -34,6 +43,7 @@ public class HolyShoot : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
+        Debug.Log("Rotate HOLYSHOOT");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }

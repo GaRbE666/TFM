@@ -28,7 +28,7 @@ public class WeeperAttack : MonoBehaviour
     [SerializeField] private Color nonReachableObjetive;
 
     [HideInInspector] public bool isAttacking;
-    private bool _canAttack;
+    [HideInInspector] public bool _canAttack;
     private const int MIN_ATTACK = 1;
     private const int MAX_ATTACK = 4;
     #endregion
@@ -55,7 +55,7 @@ public class WeeperAttack : MonoBehaviour
             return;
         }
 
-        if (CheckDistance(weeperMovement.stoppingDistance))
+        if (CheckDistance(weeperMovement.stoppingDistance) && !weeperHealth.isGettingHurt)
         {
             isAttacking = true;
             _canAttack = false;

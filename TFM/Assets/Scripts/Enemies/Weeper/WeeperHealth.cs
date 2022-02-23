@@ -6,6 +6,7 @@ public class WeeperHealth : MonoBehaviour
 {
     #region FIELDS
     [Header("References")]
+    [SerializeField] private WeeperAttack weeperAttack;
     [SerializeField] private WeeperAnimation weeperAnimaton;
     [SerializeField] private BloodPrefabs bloodPrefab;
     [SerializeField] private CapsuleCollider[] weeperColliders;
@@ -15,6 +16,7 @@ public class WeeperHealth : MonoBehaviour
     [SerializeField] private float currentHealth;
 
     [HideInInspector] public bool isDead;
+    [HideInInspector] public bool isGettingHurt;
     #endregion
 
     #region UNITY METHODS
@@ -47,8 +49,16 @@ public class WeeperHealth : MonoBehaviour
         }
         else
         {
+            weeperAttack.isAttacking = false;
+            weeperAttack._canAttack = true;
+            isGettingHurt = true;
             weeperAnimaton.HitAnim();
         }
+    }
+
+    public void CanGotHitAnimAgain() //Method called by AnimationEvent GotHit
+    {
+        isGettingHurt = false;
     }
 
     private void DisableAllColliders()

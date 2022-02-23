@@ -7,6 +7,7 @@ public class Weapon : ScriptableObject
 {
     [Header("References")]
     public GameObject prefab;
+    public float radiusHit;
     public GameObject fireEffect;
     public GameObject iceEffect;
     public GameObject electricEffect;

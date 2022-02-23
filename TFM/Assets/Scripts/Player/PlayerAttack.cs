@@ -5,18 +5,22 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     #region FIELDS
-    //[SerializeField] private Weapon swordScriptable;
-    [SerializeField] private bool canHurt;
+    [Header("References")]
     [SerializeField] private PlayerWeapon weapons;
     [SerializeField] private PlayerAnimation _playerAnimation;
+
+    [Header("Config")]
+    [SerializeField] private bool canHurt;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float radius;
+
+    [Header("Debuggin")]
+    [SerializeField] private bool canDraw;
+    [SerializeField] private Transform weaponActive;
+
     #endregion
 
     #region UNITY METHODS
-    //private void Awake()
-    //{
-    //    _playerAnimation = transform.parent.gameObject.GetComponent<PlayerAnimation>();
-    //}
-
     private void Update()
     {
         if (InputController.instance.isAttacking && InputController.instance.canPress)
@@ -28,19 +32,31 @@ public class PlayerAttack : MonoBehaviour
         {
             StrongAttack();
         }
+
+        //if (canHurt)
+        //{
+        //    CheckForEnemy();
+        //}
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private void OnDrawGizmos()
     {
-        if (other.gameObject.layer == 8 && canHurt)
+        if (canDraw)
         {
-            Debug.Log(other.transform.root);
-            WeeperHealth weeperHealth = other.transform.root.GetComponent<WeeperHealth>();
-            weeperHealth.TakeDamage(CalculateDamage());
-            weeperHealth.GenerateBlood(other.transform);
+            Gizmos.DrawWireSphere(weaponActive.position, radius);
         }
     }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.layer == 8 && canHurt)
+    //    {
+    //        Debug.Log(other.transform.root);
+    //        WeeperHealth weeperHealth = other.transform.root.GetComponent<WeeperHealth>();
+    //        weeperHealth.TakeDamage(CalculateDamage());
+    //        weeperHealth.GenerateBlood(other.transform);
+    //    }
+    //}
     #endregion
 
     #region CUSTOM METHODS
@@ -48,7 +64,7 @@ public class PlayerAttack : MonoBehaviour
     private float CalculateDamage()
     {
         float totalDamage;
-        totalDamage = weapons.activeWeapon.damage;
+        totalDamage = weapons.scriptableActiveWeapon.damage;
         return totalDamage;
     }
 
@@ -64,12 +80,23 @@ public class PlayerAttack : MonoBehaviour
         InputController.instance.isAttacking = false;
     }
 
-    public void PlayerCanHurt()
+    public void PlayerCanHurt() //Method Call by AnimationEvent
     {
         canHurt = true;
     }
 
-    public void PlayerCanNotHurt()
+    public void CheckForEnemy()
+    {
+        Collider[] enemyColliders = Physics.OverlapSphere(weapons.activeWeapon.transform.GetChild(0).position, weapons.scriptableActiveWeapon.radiusHit, enemyLayer);
+        foreach (Collider enemyCollider in enemyColliders)
+        {
+            WeeperHealth weeperHealth = enemyCollider.transform.root.GetComponent<WeeperHealth>();
+            weeperHealth.TakeDamage(CalculateDamage());
+            weeperHealth.GenerateBlood(enemyCollider.gameObject.transform);
+        }
+    }
+
+    public void PlayerCanNotHurt() //Method call by AnimationEvent
     {
         canHurt = false;
     }

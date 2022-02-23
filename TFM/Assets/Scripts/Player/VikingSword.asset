@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71a81c070a542a24b8269f3524ba9fde, type: 3}
-  m_Name: MainWeapon
+  m_Name: VikingSword
   m_EditorClassIdentifier: 
   prefab: {fileID: 1924920441546308, guid: 4b64f29b658691645b21cd47ffcf8d53, type: 3}
+  radiusHit: 0.45
   fireEffect: {fileID: 0}
   iceEffect: {fileID: 0}
   electricEffect: {fileID: 0}

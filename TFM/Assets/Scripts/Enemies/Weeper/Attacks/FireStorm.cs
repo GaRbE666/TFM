@@ -5,9 +5,13 @@ using UnityEngine;
 public class FireStorm : MonoBehaviour, IAttack
 {
     #region FIELDS
+    [Header("References")]
+    [SerializeField] private WeeperHealth weeperHealth;
     [SerializeField] private WeeperAnimation weeperAnimation;
     [SerializeField] private GameObject misileObject;
     [SerializeField] private Transform target;
+
+    [Header("Parameters")]
     [Tooltip("Tiempo que la animación se queda atacando hasta que finaliza el ataque")]
     [SerializeField] private float timeLoopAttack;
     [SerializeField] private float timeToFaceTarget;
@@ -19,6 +23,11 @@ public class FireStorm : MonoBehaviour, IAttack
     #region UNITY METHODS
     private void Update()
     {
+        if (weeperHealth.isDead)
+        {
+            return;
+        }
+
         if (weeperAnimation.IfCurrentAnimationIsPlaying("Cast02start"))
         {
             _prepareAttack = true;
@@ -48,6 +57,7 @@ public class FireStorm : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
+        Debug.Log("Rotate FIRESTORM");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }

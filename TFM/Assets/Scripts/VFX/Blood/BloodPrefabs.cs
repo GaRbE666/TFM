@@ -42,7 +42,6 @@ public class BloodPrefabs : MonoBehaviour
             closetbone = hit;
         }
 
-        Debug.Log(closetbone);
         return closetbone;
     }
 
