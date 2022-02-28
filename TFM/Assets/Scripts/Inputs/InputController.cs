@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
+    #region FIELDS
     private static InputController _inputController;
     public static InputController instance { get { return _inputController; } }
     private PlayerInputAction playerInputAction;
@@ -13,10 +14,14 @@ public class InputController : MonoBehaviour
     [HideInInspector] public bool isBlocking;
     [HideInInspector] public bool isAttacking;
     [HideInInspector] public bool isRolling;
-    /*[HideInInspector]*/ public bool canPress;
+    [HideInInspector] public bool canPress;
     [HideInInspector] public bool isStrongAttacking;
     [HideInInspector] public bool isSwitchingWeapon;
+    [HideInInspector] public bool isRecenteringCamera;
+    [HideInInspector] public bool isAiming;
+    #endregion
 
+    #region UNITY METHODS
     private void Awake()
     {
         if (_inputController != null && _inputController != this)
@@ -39,11 +44,39 @@ public class InputController : MonoBehaviour
         playerInputAction.Player.Roll.started += RollIsPressed;
         playerInputAction.Player.StrongAttack.started += StrongAttackIsPressed;
         playerInputAction.Player.SwitchWeapon.started += SwitchRightWeapon;
+        playerInputAction.Player.RecenterCamera.started += RecenterCameraY;
+        playerInputAction.Player.RecenterCamera.canceled += StopRecenterCameraY;
+        playerInputAction.Player.LockTarget.started += LockTarget;
     }
 
     private void Start()
     {
         canPress = true;
+    }
+    #endregion
+
+    #region CUSTOM METHODS
+    public void LockTarget(InputAction.CallbackContext contex)
+    {
+        if (isAiming)
+        {
+            isAiming = false;
+        }
+        else
+        {
+            isAiming = true;
+        }
+
+    }
+
+    public void RecenterCameraY(InputAction.CallbackContext context)
+    {
+        isRecenteringCamera = true;
+    }
+
+    public void StopRecenterCameraY(InputAction.CallbackContext context)
+    {
+        isRecenteringCamera = false;
     }
 
     public void SwitchRightWeapon(InputAction.CallbackContext context)
@@ -139,14 +172,5 @@ public class InputController : MonoBehaviour
     {
         isBlocking = false;
     }
-
-    //private void BlockPressButton()
-    //{
-    //    canPress = false;
-    //}
-
-    //private void UnlockPressButton()
-    //{
-    //    canPress = true;
-    //}
+    #endregion
 }

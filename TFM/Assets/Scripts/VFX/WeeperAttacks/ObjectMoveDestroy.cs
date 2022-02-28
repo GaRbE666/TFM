@@ -18,6 +18,7 @@ public class ObjectMoveDestroy : MonoBehaviour
     public bool isCheckHitTag;
     public string mtag;
     public bool isShieldActive = false;
+    public float damage;
 
     float time;
     bool ishit;
@@ -66,10 +67,19 @@ public class ObjectMoveDestroy : MonoBehaviour
     void HitObj(RaycastHit hit)
     {
         if (isCheckHitTag)
+        {
             if (hit.transform.tag != mtag)
+            {
                 return;
+            }
+            Debug.Log("Soy el player");
+            PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
+            playerHealth.TakeDamage(damage);
+        }
+
         ishit = true;
-        if(m_gameObjectTail)
+
+        if (m_gameObjectTail)
             m_gameObjectTail.transform.parent = null;
         MakeHitObject(hit);
 

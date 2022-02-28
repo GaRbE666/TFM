@@ -4,18 +4,47 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    #region FIELDS
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private PlayerAnimation playerAnimation;
+    [SerializeField] private Collider[] colliders;
+    [SerializeField] private PlayerWeapon playerWeapon;
 
     [HideInInspector] public bool death;
+    #endregion
 
-    // Start is called before the first frame update
-    void Start()
+    #region UNITY METHODS
+    private void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    #endregion
+
+    #region CUSTOM METHODS
+    public void TakeDamage(float damage)
     {
-        
+        currentHealth -= damage;
+        CheckIfIAmDead();
     }
+
+    private void CheckIfIAmDead()
+    {
+        if (currentHealth <= 0)
+        {
+            PlayerDead();
+        }
+        else
+        {
+            playerAnimation.HitAnim();
+        }
+    }
+
+    private void PlayerDead()
+    {
+        death = true;
+        playerAnimation.DeathAnim();
+    }
+    #endregion
 }

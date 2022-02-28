@@ -14,6 +14,7 @@ public class HolyShoot : MonoBehaviour, IAttack
 
     [Header("Parameters")]
     [SerializeField] private float timeToFaceTarget;
+    [SerializeField] private float offsetRotationY;
 
     private bool _canRotateToTarget;
     #endregion
@@ -21,12 +22,12 @@ public class HolyShoot : MonoBehaviour, IAttack
     #region UNITY METHODS
     private void FixedUpdate()
     {
-        if (!_canRotateToTarget)
+        if (weeperHealth.isDead)
         {
             return;
         }
 
-        if (weeperHealth.isDead)
+        if (!_canRotateToTarget)
         {
             return;
         }
@@ -43,20 +44,20 @@ public class HolyShoot : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
-        Debug.Log("Rotate HOLYSHOOT");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }
 
     public void LaunchHolyShootAttack() //Method called by AnimationEvent Cast01
     {
+        Debug.Log("Ataco");
         Attack();
     }
 
     public void Attack()
     {
         _canRotateToTarget = false;
-        Instantiate(holyShoot, startPointAttack.position, transform.rotation);
+        Instantiate(holyShoot, startPointAttack.position, startPointAttack.rotation);
     }
     #endregion
 }

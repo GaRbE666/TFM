@@ -12,6 +12,7 @@ public class ArrowShoot : MonoBehaviour, IAttack
     [SerializeField] private Transform target;
     [SerializeField] private GameObject arrowEmission;
     [SerializeField] private Transform startPointAttack;
+    public float damage;
 
     [Header("Parameters")]
     [SerializeField] private float timeToFaceTarget;
@@ -22,12 +23,12 @@ public class ArrowShoot : MonoBehaviour, IAttack
     #region UNITY METHODS
     private void FixedUpdate()
     {
-        if (!_canRotateToTarget)
+        if (weeperHealth.isDead)
         {
             return;
         }
 
-        if (weeperHealth.isDead)
+        if (!_canRotateToTarget)
         {
             return;
         }
@@ -44,7 +45,6 @@ public class ArrowShoot : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
-        Debug.Log("Rotate ARROWSHOOT");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }

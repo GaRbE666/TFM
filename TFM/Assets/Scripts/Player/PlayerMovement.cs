@@ -16,6 +16,11 @@ public class PlayerMovement : MonoBehaviour
     [Range(0.0f, 0.3f)]
     public float RotationSmoothTime = 0.12f;
 
+    [Header("Aim Settings")]
+    [SerializeField] private float radiusAim;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private Transform target;
+
     [Header("Ground Settings")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundChecker;
@@ -25,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cam;
     [SerializeField] private CinemachineFreeLook camFreeLook;
+    [SerializeField] private PlayerHealth playerHealth;
 
     [HideInInspector] public bool isMoving;
     [HideInInspector] public bool isInFloor;
@@ -36,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
     private float _targetRotation;
     private float _rotationVelocity;
     private Vector3 targetDirection;
-
     #endregion
 
     #region "UNITY EVENTS"
@@ -49,6 +54,11 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
+        if (playerHealth.death)
+        {
+            return;
+        }
+
         if (_freeze)
         {
             return;
@@ -59,14 +69,15 @@ public class PlayerMovement : MonoBehaviour
         if (_inputs != Vector3.zero)
         {
             isMoving = true;
-            playerAnimation.MoveAnim();
+            playerAnimation.MoveAnim(InputController.instance.GetReadValueFromInput().x, InputController.instance.GetReadValueFromInput().y);
+
+            //Calculation of necessary grades to the objective
             _targetRotation = Mathf.Atan2(_inputs.x, _inputs.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
-
-            // rotate to face input direction relative to camera position
+            //Rotate to face input direction relative to camera position
             transform.rotation = Quaternion.Euler(0f, rotation, 0f);
 
-            targetDirection = Quaternion.Euler(0f, _targetRotation, 0f) * Vector3.forward; 
+            targetDirection = Quaternion.Euler(0f, _targetRotation, 0f) * Vector3.forward;
         }
         else
         {
@@ -113,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (InputController.instance.isBlocking && playerAnimation.IfCurrentAnimationIsPlaying("Shield-Block") || playerAnimation.IfCurrentAnimationIsPlaying("Shield-Walk-Slow-Block"))
+        if (InputController.instance.isBlocking && playerAnimation.IfCurrentAnimationIsPlaying("Shield-Block") || playerAnimation.IfCurrentAnimationIsPlaying("Shield-Walk-Slow-Block") || InputController.instance.isAiming)
         {
             _rb.MovePosition(_rb.position + targetDirection  * walkSpeed * Time.fixedDeltaTime);
         }
@@ -125,6 +136,16 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region "METHODS"
+
+    private void RotateTowardsTarget(Vector3 targetPosition)
+    {
+        Vector3 lookTarget = new Vector3(targetPosition.x - transform.position.x, 0, targetPosition.z - transform.position.z);
+        if (lookTarget != Vector3.zero)
+        {
+            var targetRotation = Quaternion.LookRotation(lookTarget);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * RotationSmoothTime);
+        }
+    }
 
     private void DashBack()
     {

@@ -33,10 +33,14 @@ public class PlayerAttack : MonoBehaviour
             StrongAttack();
         }
 
-        //if (canHurt)
-        //{
-        //    CheckForEnemy();
-        //}
+        if (InputController.instance.isAiming)
+        {
+            _playerAnimation.AimTarget();
+        }
+        else
+        {
+            _playerAnimation.NotAimTarget();
+        }
     }
 
     private void OnDrawGizmos()
@@ -46,17 +50,6 @@ public class PlayerAttack : MonoBehaviour
             Gizmos.DrawWireSphere(weaponActive.position, radius);
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.layer == 8 && canHurt)
-    //    {
-    //        Debug.Log(other.transform.root);
-    //        WeeperHealth weeperHealth = other.transform.root.GetComponent<WeeperHealth>();
-    //        weeperHealth.TakeDamage(CalculateDamage());
-    //        weeperHealth.GenerateBlood(other.transform);
-    //    }
-    //}
     #endregion
 
     #region CUSTOM METHODS

@@ -68,6 +68,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "LockTarget",
+                    "type": "Button",
+                    "id": "1c3964c1-139c-4e4f-8619-8c2049d494cf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -272,11 +280,22 @@
                 {
                     "name": "",
                     "id": "622fc522-cd7d-4d42-b25a-e6ea641cb5d8",
-                    "path": "<Gamepad>/rightStickPress",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "RecenterCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "acd54f6e-b802-407d-961d-d19e770f75ed",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "LockTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
