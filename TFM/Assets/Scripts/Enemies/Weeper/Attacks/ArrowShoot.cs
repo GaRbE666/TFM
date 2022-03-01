@@ -12,7 +12,6 @@ public class ArrowShoot : MonoBehaviour, IAttack
     [SerializeField] private Transform target;
     [SerializeField] private GameObject arrowEmission;
     [SerializeField] private Transform startPointAttack;
-    public float damage;
 
     [Header("Parameters")]
     [SerializeField] private float timeToFaceTarget;

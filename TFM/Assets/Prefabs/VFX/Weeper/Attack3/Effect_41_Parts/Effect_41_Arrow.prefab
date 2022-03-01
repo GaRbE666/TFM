@@ -9833,10 +9833,10 @@ MonoBehaviour:
   isDestroy: 0
   ObjectDestroyTime: 0
   TailDestroyTime: 1
-  HitObjectDestroyTime: 1
+  HitObjectDestroyTime: 0.5
   maxTime: 1
   MoveSpeed: 40
-  isCheckHitTag: 0
-  mtag: 
+  isCheckHitTag: 1
+  mtag: Player
   isShieldActive: 0
-  damage: 0
+  damage: 100

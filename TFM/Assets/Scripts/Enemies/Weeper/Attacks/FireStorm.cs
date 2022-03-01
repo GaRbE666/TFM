@@ -10,6 +10,7 @@ public class FireStorm : MonoBehaviour, IAttack
     [SerializeField] private WeeperAnimation weeperAnimation;
     [SerializeField] private GameObject misileObject;
     [SerializeField] private Transform target;
+    [SerializeField] private Transform[] randomPosInstance;
 
     [Header("Parameters")]
     [Tooltip("Tiempo que la animación se queda atacando hasta que finaliza el ataque")]
@@ -55,9 +56,14 @@ public class FireStorm : MonoBehaviour, IAttack
         Instantiate(misileObject, target.position, misileObject.transform.rotation);
     }
 
+    public void LaunchMisile()
+    {
+        Debug.Log("Lanzo misil");
+        Attack();
+    }
+
     private void RotateToPlayer()
     {
-        Debug.Log("Rotate FIRESTORM");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }
@@ -75,7 +81,7 @@ public class FireStorm : MonoBehaviour, IAttack
     {
         _isLooping = true;
         weeperAnimation.CantFinishAttackAnim();
-        Attack();
+        //Attack();
         yield return new WaitForSeconds(timeLoopAttack);
         weeperAnimation.FinishAttackAnim();
         _isLooping = false;

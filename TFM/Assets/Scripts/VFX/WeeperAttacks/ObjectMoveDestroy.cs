@@ -72,9 +72,12 @@ public class ObjectMoveDestroy : MonoBehaviour
             {
                 return;
             }
-            Debug.Log("Soy el player");
+
             PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
-            playerHealth.TakeDamage(damage);
+            if (!playerHealth.death)
+            {
+                playerHealth.TakeDamage(damage);
+            }
         }
 
         ishit = true;
