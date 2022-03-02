@@ -56,9 +56,8 @@ public class FireStorm : MonoBehaviour, IAttack
         Instantiate(misileObject, target.position, misileObject.transform.rotation);
     }
 
-    public void LaunchMisile()
+    public void LaunchMisile() //Method called by AnimationEvent Cast02Loop
     {
-        Debug.Log("Lanzo misil");
         Attack();
     }
 
@@ -81,7 +80,6 @@ public class FireStorm : MonoBehaviour, IAttack
     {
         _isLooping = true;
         weeperAnimation.CantFinishAttackAnim();
-        //Attack();
         yield return new WaitForSeconds(timeLoopAttack);
         weeperAnimation.FinishAttackAnim();
         _isLooping = false;

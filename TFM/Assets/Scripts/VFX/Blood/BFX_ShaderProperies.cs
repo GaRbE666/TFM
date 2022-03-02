@@ -67,7 +67,6 @@ public class BFX_ShaderProperies : MonoBehaviour {
         if (!canUpdate) return;
 
         rend.GetPropertyBlock(props);
-        Debug.Log(timeLapsed);
         var deltaTime = BloodSettings == null ? Time.deltaTime : Time.deltaTime * BloodSettings.AnimationSpeed;
         if (BloodSettings != null && BloodSettings.FreezeDecalDisappearance && (timeLapsed / GraphTimeMultiplier) > 0.3f) { }
         else timeLapsed += deltaTime;

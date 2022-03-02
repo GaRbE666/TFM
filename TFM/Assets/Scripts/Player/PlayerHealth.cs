@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     [SerializeField] private float currentHealth;
     [SerializeField] private PlayerAnimation playerAnimation;
+    [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Collider[] colliders;
     [SerializeField] private PlayerWeapon playerWeapon;
 
@@ -43,6 +44,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void PlayerDead()
     {
+        playerMovement.enabled = false;
         death = true;
         playerAnimation.DeathAnim();
     }

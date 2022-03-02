@@ -13,7 +13,7 @@ public class SwordDance : MonoBehaviour, IAttack
     [SerializeField] private Transform target;
 
     [Header("Parameters")]
-    [Tooltip("Tiempo que la animación se queda atacando hasta que finaliza el ataque")]
+    [Tooltip("Time that the animation stays attacking until the attack is finished")]
     [SerializeField] private float timeLoopAttack;
     [SerializeField] private float timeToFaceTarget;
 
