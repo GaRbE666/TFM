@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(WeeperHealth))]
 public class BloodPrefabs : MonoBehaviour
 {
     [Tooltip("Decal que se muestra en el poropio modelo y se coloca como hijo del hueso colisionado")]

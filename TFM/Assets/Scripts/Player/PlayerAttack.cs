@@ -83,9 +83,21 @@ public class PlayerAttack : MonoBehaviour
         Collider[] enemyColliders = Physics.OverlapSphere(weapons.activeWeapon.transform.GetChild(0).position, weapons.scriptableActiveWeapon.radiusHit, enemyLayer);
         foreach (Collider enemyCollider in enemyColliders)
         {
-            WeeperHealth weeperHealth = enemyCollider.transform.root.GetComponent<WeeperHealth>();
-            weeperHealth.TakeDamage(CalculateDamage());
-            weeperHealth.GenerateBlood(enemyCollider.gameObject.transform);
+            Debug.Log(enemyCollider.transform.root.gameObject.name);
+            if (enemyCollider.transform.root.GetComponent<WeeperHealth>())
+            {
+                WeeperHealth weeperHealth = enemyCollider.transform.root.GetComponent<WeeperHealth>();
+                weeperHealth.TakeDamage(CalculateDamage());
+                weeperHealth.GenerateBlood(enemyCollider.gameObject.transform);
+            }
+
+            if (enemyCollider.transform.root.GetComponent<SerpentHealth>())
+            {
+                Debug.Log("Serpent");
+                SerpentHealth serpentHealth = enemyCollider.transform.root.GetComponent<SerpentHealth>();
+                serpentHealth.TakeDamage(CalculateDamage());
+                serpentHealth.GenerateBlood(enemyCollider.gameObject.transform);
+            }
         }
     }
 

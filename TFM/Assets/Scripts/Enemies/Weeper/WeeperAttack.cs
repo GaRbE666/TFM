@@ -12,17 +12,17 @@ public class WeeperAttack : MonoBehaviour
     [SerializeField] private Transform target;
 
     [Header("Attack Config")]
-    [Tooltip("Valor del daño que hace el enemigo")]
+    [Tooltip("Value of damage done by the enemy")]
     [SerializeField] private float damage;
     [SerializeField] private float maxTimeToNextAttack;
     [SerializeField] private float minTimeToNextAttack;
 
     [Header("Debug Config")]
-    [Tooltip("Selecciona esta opción para que el enemigo repita indefinidamente el ataque que eligas")]
+    [Tooltip("Select this option to make the enemy repeat indefinitely the attack of your choice.")]
     [SerializeField] private bool forceAttack;
-    [Range(1, 4)] [Tooltip("Elige que ataque quieres que se repita")]
+    [Range(1, 4)] [Tooltip("Choose which attack you want to be repeated")]
     [SerializeField] private int doThisAttack;
-    [Tooltip("Dibuja el radio de ataque")]
+    [Tooltip("Draw the attack radius")]
     [SerializeField] private bool canDraw;
     [SerializeField] private Color reachableObjetive;
     [SerializeField] private Color nonReachableObjetive;
@@ -33,6 +33,7 @@ public class WeeperAttack : MonoBehaviour
     private const int MAX_ATTACK = 4;
     #endregion
 
+    #region UNITY METHODS
     private void Start()
     {
         _canAttack = true;
@@ -69,6 +70,7 @@ public class WeeperAttack : MonoBehaviour
             }
         }
     }
+    #endregion
 
     #region CUSTOM METHODS
     private bool CheckDistance(float distance)
@@ -96,26 +98,6 @@ public class WeeperAttack : MonoBehaviour
     private float GenerateRandomTimeToNextAttack()
     {
         return Random.Range(minTimeToNextAttack, maxTimeToNextAttack);
-    }
-    #endregion
-
-    #region DEBUG METHODS
-    private void OnDrawGizmos()
-    {
-        if (canDraw)
-        {
-            float distance = Vector3.Distance(transform.position, target.position);
-
-            if (distance <= weeperMovement.stoppingDistance)
-            {
-                Gizmos.color = reachableObjetive;
-            }
-            else
-            {
-                Gizmos.color = nonReachableObjetive;
-            }
-            Gizmos.DrawWireSphere(transform.position, weeperMovement.stoppingDistance);
-        }
     }
     #endregion
 }

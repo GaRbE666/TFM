@@ -137,15 +137,15 @@ public class PlayerMovement : MonoBehaviour
 
     #region "METHODS"
 
-    private void RotateTowardsTarget(Vector3 targetPosition)
-    {
-        Vector3 lookTarget = new Vector3(targetPosition.x - transform.position.x, 0, targetPosition.z - transform.position.z);
-        if (lookTarget != Vector3.zero)
-        {
-            var targetRotation = Quaternion.LookRotation(lookTarget);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * RotationSmoothTime);
-        }
-    }
+    //private void RotateTowardsTarget(Vector3 targetPosition)
+    //{
+    //    Vector3 lookTarget = new Vector3(targetPosition.x - transform.position.x, 0, targetPosition.z - transform.position.z);
+    //    if (lookTarget != Vector3.zero)
+    //    {
+    //        var targetRotation = Quaternion.LookRotation(lookTarget);
+    //        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * RotationSmoothTime);
+    //    }
+    //}
 
     private void DashBack()
     {
