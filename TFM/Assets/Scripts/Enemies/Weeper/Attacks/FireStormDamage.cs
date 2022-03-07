@@ -6,7 +6,7 @@ public class FireStormDamage : MonoBehaviour
 {
     #region FIELDS
     [SerializeField] private float radius;
-    [SerializeField] private LayerMask ground;
+    [SerializeField] private LayerMask player;
     [SerializeField] private Transform startPoint;
     [SerializeField] private float damage;
     #endregion
@@ -14,7 +14,7 @@ public class FireStormDamage : MonoBehaviour
     #region UNITY METHODS
     private void OnParticleCollision(GameObject other)
     {
-        Collider[] colliders = Physics.OverlapSphere(startPoint.position, radius, ground);
+        Collider[] colliders = Physics.OverlapSphere(startPoint.position, radius, player);
 
         foreach (Collider collision in colliders)
         {

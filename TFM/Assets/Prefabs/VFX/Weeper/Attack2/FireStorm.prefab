@@ -14709,7 +14709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1
-  ground:
+  player:
     serializedVersion: 2
     m_Bits: 512
   startPoint: {fileID: 554618884919306222}

@@ -16,7 +16,7 @@ public class ArrowShoot : MonoBehaviour, IAttack
     [Header("Parameters")]
     [SerializeField] private float timeToFaceTarget;
 
-    public bool _canRotateToTarget;
+    private bool _canRotateToTarget;
     #endregion
 
     #region UNITY METHODS
