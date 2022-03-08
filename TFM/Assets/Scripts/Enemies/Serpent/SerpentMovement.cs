@@ -9,6 +9,7 @@ public class SerpentMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform target;
     [SerializeField] private SerpentAnimation serpentAnimation;
+    [SerializeField] private SerpentHealth serpentHealth;
 
     [Header("Parameters")]
     [SerializeField] private float distanceToFollow;
@@ -36,6 +37,11 @@ public class SerpentMovement : MonoBehaviour
 
     void Update()
     {
+        if (serpentHealth.isDead)
+        {
+            return;
+        }
+
         if (CheckDistanceToPlayer() && !CheckDistanceToPlayer(_navMeshAgent.stoppingDistance))
         {
             isMoving = true;

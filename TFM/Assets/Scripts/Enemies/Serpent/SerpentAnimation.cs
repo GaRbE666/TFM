@@ -51,7 +51,6 @@ public class SerpentAnimation : MonoBehaviour
 
     public void HitAnim()
     {
-        Debug.Log("Hit");
         serpentAnimator.SetTrigger(hit);
     }
 

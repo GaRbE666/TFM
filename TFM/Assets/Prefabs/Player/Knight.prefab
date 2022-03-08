@@ -2802,7 +2802,7 @@ GameObject:
   - component: {fileID: 3169908012916069439}
   - component: {fileID: 3712843763898765569}
   - component: {fileID: 5823252573474949807}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Knight
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2872,10 +2872,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1.9
+  m_Radius: 0.2478289
+  m_Height: 1.54042
   m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0}
+  m_Center: {x: 0.024511725, y: 0.77021, z: 0.022340596}
 --- !u!114 &3169908012916069436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2907,6 +2907,7 @@ MonoBehaviour:
   showGroundChecker: 1
   cam: {fileID: 0}
   camFreeLook: {fileID: 0}
+  playerHealth: {fileID: 3169908012916069438}
   isMoving: 0
   isInFloor: 0
 --- !u!114 &3169908012916069432
@@ -2940,7 +2941,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  radius: 0.45
+  radius: 0.5
   canDraw: 1
   weaponActive: {fileID: 616813702781033714}
 --- !u!114 &3169908012916069438
@@ -2955,6 +2956,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b4dd31f83d8884592f958b7ce8f5d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 500
+  currentHealth: 0
+  playerAnimation: {fileID: 3169908012916069432}
+  playerMovement: {fileID: 3169908012916069436}
+  colliders:
+  - {fileID: 3169908012916069426}
+  - {fileID: 3105615363997841585}
+  playerWeapon: {fileID: 3712843763898765569}
   death: 0
 --- !u!114 &3169908012916069439
 MonoBehaviour:

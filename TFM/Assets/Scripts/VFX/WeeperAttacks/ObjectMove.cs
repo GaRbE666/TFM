@@ -15,6 +15,7 @@ public class ObjectMove : MonoBehaviour
     public float MaxLength;
     public float DestroyTime2;
     float m_scalefactor;
+    [SerializeField] private float damage;
 
     private void Start()
     {
@@ -45,7 +46,13 @@ public class ObjectMove : MonoBehaviour
 
     void HitObj(RaycastHit hit)
     {
+        Debug.Log("Entro");
         m_makedObject = Instantiate(m_hitObject, hit.point, Quaternion.LookRotation(hit.normal)).gameObject;
+        PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
+        if (!playerHealth.death)
+        {
+            playerHealth.TakeDamage(damage);
+        }
         Destroy(m_makedObject, DestroyTime2);
     }
 
