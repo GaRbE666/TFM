@@ -3685,6 +3685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   serpentAnimation: {fileID: 6586879311860163971}
+  serpentHealth: {fileID: 0}
   distanceToFollow: 20
   canDraw: 1
   reachableObjetive: {r: 0.07035947, g: 1, b: 0, a: 1}
