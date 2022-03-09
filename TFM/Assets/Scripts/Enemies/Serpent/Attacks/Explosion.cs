@@ -54,6 +54,7 @@ public class Explosion : MonoBehaviour
 
     private void RotateToPlayer()
     {
+        Debug.Log("RotoExplosion");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }

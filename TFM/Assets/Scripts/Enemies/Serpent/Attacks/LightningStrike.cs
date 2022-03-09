@@ -43,6 +43,7 @@ public class LightningStrike : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
+        Debug.Log("RotoLightning");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }
