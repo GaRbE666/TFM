@@ -96,6 +96,13 @@ public class PlayerAttack : MonoBehaviour
                 serpentHealth.TakeDamage(CalculateDamage());
                 serpentHealth.GenerateBlood(enemyCollider.gameObject.transform);
             }
+
+            if (enemyCollider.transform.root.GetComponent<GargoyleHealth>())
+            {
+                GargoyleHealth gargoyleHealth = enemyCollider.transform.root.GetComponent<GargoyleHealth>();
+                gargoyleHealth.TakeDamage(CalculateDamage());
+                gargoyleHealth.GenerateBlood(enemyCollider.gameObject.transform);
+            }
         }
     }
 

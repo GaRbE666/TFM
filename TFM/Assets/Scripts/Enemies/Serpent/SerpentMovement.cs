@@ -20,8 +20,8 @@ public class SerpentMovement : MonoBehaviour
     [SerializeField] private Color nonReachableObjetive;
 
     private NavMeshAgent _navMeshAgent;
-    /*[HideInInspector]*/ public float stoppingDistance;
-    /*[HideInInspector]*/ public bool isMoving;
+    [HideInInspector] public float stoppingDistance;
+    [HideInInspector] public bool isMoving;
     #endregion
 
     #region UNITY METHODS
@@ -85,11 +85,5 @@ public class SerpentMovement : MonoBehaviour
     {
         return Vector3.Distance(transform.position, target.position) <= ditanceToCompare;
     }
-
-    //private void RotateToPlayer()
-    //{
-    //    Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
-    //    transform.rotation = rotation;
-    //}
     #endregion
 }
