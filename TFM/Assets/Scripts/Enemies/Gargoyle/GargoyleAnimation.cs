@@ -15,12 +15,24 @@ public class GargoyleAnimation : MonoBehaviour
     private int _attack2 = Animator.StringToHash("attack2");
     private int _magicAttack = Animator.StringToHash("magicAttack");
     private int _stopAttack = Animator.StringToHash("stopAttack");
+    private int _flyAttack1 = Animator.StringToHash("flyAttack1");
+    private int _flyAttack2 = Animator.StringToHash("flyAttack2");
     #endregion
 
     #region CUSTOM METHODS
     public bool IfCurrentAnimationIsPlaying(string animationName)
     {
         return gargoyleAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
+    }
+
+    public void FlyAttack1Anim()
+    {
+        gargoyleAnimator.SetTrigger(_flyAttack1);
+    }
+
+    public void FlyAttack2Anim()
+    {
+        gargoyleAnimator.SetTrigger(_flyAttack2);
     }
 
     public void WalkAnim()
@@ -75,6 +87,12 @@ public class GargoyleAnimation : MonoBehaviour
                 break;
             case 3:
                 gargoyleAnimator.SetTrigger(_magicAttack);
+                break;
+            case 4:
+                gargoyleAnimator.SetTrigger(_flyAttack1);
+                break;
+            case 5:
+                gargoyleAnimator.SetTrigger(_flyAttack2);
                 break;
         }
     }

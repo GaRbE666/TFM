@@ -29,6 +29,8 @@ public class GargoyleAttack : MonoBehaviour
     [HideInInspector] public bool _canAttack;
     private const int MIN_ATTACK = 1;
     private const int MAX_ATTACK = 3;
+    private const int MIN_FLY_ATTACK = 4;
+    private const int MAX_FLY_ATTACK = 5;
     #endregion
 
     #region UNITY METHODS
@@ -55,7 +57,6 @@ public class GargoyleAttack : MonoBehaviour
             _canAttack = false;
             if (forceAttack)
             {
-                Debug.Log("Ataco");
                 gargoyleAnimation.AttackAnim(doThisAttack);
             }
             else
@@ -104,7 +105,18 @@ public class GargoyleAttack : MonoBehaviour
 
     private int GenerateRandomAttack()
     {
-        return Random.Range(MIN_ATTACK, MAX_ATTACK);
+        int randomNumber;
+        if (!gargoyleMovement.isFlying)
+        {
+            randomNumber = Random.Range(MIN_ATTACK, MAX_ATTACK);
+            return randomNumber;
+        }
+        else
+        {
+            randomNumber = Random.Range(MIN_FLY_ATTACK, MAX_FLY_ATTACK);
+            return randomNumber;
+        }
+        
     }
 
     private float GenerateRandomTimeToNextAttack()

@@ -10,9 +10,12 @@ public class GargoyleMovement : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private GargoyleAnimation gargoyleAnimation;
     [SerializeField] private GargoyleHealth gargoyleHealth;
+    [SerializeField] private GargoyleAttack gargoyleAttack;
 
     [Header("Parameters")]
     [SerializeField] private float distanceToFollow;
+    [SerializeField] private float percentageToFly;
+    [SerializeField] private float timeToCheckIfICanFly;
 
     [Header("Debug Parameters")]
     [SerializeField] private bool canDraw;
@@ -20,9 +23,11 @@ public class GargoyleMovement : MonoBehaviour
     [SerializeField] private Color nonReachableObjetive;
 
     private NavMeshAgent _navMeshAgent;
+    private Transform startPoint;
+    public bool _canCheckIfICanFly;
     [HideInInspector] public float stoppingDistance;
     [HideInInspector] public bool isMoving;
-    [HideInInspector] public bool isFlying;
+    /*[HideInInspector]*/ public bool isFlying;
     #endregion
 
     #region UNITY METHODS
@@ -33,8 +38,10 @@ public class GargoyleMovement : MonoBehaviour
 
     void Start()
     {
+        startPoint = transform;
         stoppingDistance = _navMeshAgent.stoppingDistance;
         isFlying = false;
+        _canCheckIfICanFly = true;
     }
 
     void Update()
@@ -44,21 +51,40 @@ public class GargoyleMovement : MonoBehaviour
             return;
         }
 
-        if (CheckDistanceToPlayer() && !CheckDistanceToPlayer(_navMeshAgent.stoppingDistance))
+        if (gargoyleAttack.isAttacking)
         {
-            isMoving = true;
-            if (!isFlying)
+            return;
+        }
+
+        if (CheckDistanceToPlayer() && !CheckMinDistanceToPlayer(_navMeshAgent.stoppingDistance) && !isMoving)
+        {
+            CheckIfICanFly();
+        }
+
+        if (CheckDistanceToPlayer())
+        {
+            ChangeAnimationMovementState(); //Le decimos si puede volar o no
+            if (CheckMinDistanceToPlayer(_navMeshAgent.stoppingDistance))
             {
-                gargoyleAnimation.StopFlyAnim();
+                isMoving = false;
+                _navMeshAgent.SetDestination(transform.position);
+                gargoyleAnimation.StopWalkAnim();
             }
-            gargoyleAnimation.WalkAnim();
-            _navMeshAgent.SetDestination(target.position);
+            else
+            {
+                isMoving = true;
+
+                _navMeshAgent.SetDestination(target.position);
+            }
+
         }
         else
         {
-            isMoving = false;
-            _navMeshAgent.SetDestination(transform.position);
-            gargoyleAnimation.StopWalkAnim();
+            
+            isFlying = false;
+            gargoyleAnimation.StopFlyAnim();
+            _navMeshAgent.SetDestination(startPoint.position);
+            gargoyleAnimation.WalkAnim();
         }
     }
 
@@ -81,12 +107,40 @@ public class GargoyleMovement : MonoBehaviour
     #endregion
 
     #region CUSTOM METHODS
+
+    private void ChangeAnimationMovementState()
+    {
+        if (!isFlying)
+        {
+            gargoyleAnimation.StopFlyAnim();
+            gargoyleAnimation.WalkAnim();
+        }
+        else
+        {
+            gargoyleAnimation.FlyAnim();
+        }
+    }
+
+    public void CheckIfICanFly()
+    {
+        float percentageRandom = Random.value;
+        Debug.Log(percentageRandom);
+        if (percentageRandom < percentageToFly)
+        {
+            isFlying = true;
+        }
+        else
+        {
+            isFlying = false;
+        }
+    }
+
     private bool CheckDistanceToPlayer()
     {
         return Vector3.Distance(transform.position, target.position) < distanceToFollow;
     }
 
-    private bool CheckDistanceToPlayer(float ditanceToCompare)
+    private bool CheckMinDistanceToPlayer(float ditanceToCompare)
     {
         return Vector3.Distance(transform.position, target.position) <= ditanceToCompare;
     }
