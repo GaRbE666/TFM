@@ -11,6 +11,7 @@ public class MeleAttack : MonoBehaviour, IAttack
     [SerializeField] private float timeToFaceTarget;
     [SerializeField] private float damage;
     [SerializeField] private float offsetZ;
+    [Tooltip("decides with which arm to strike")]
     [SerializeField] private bool isRight;
 
     [Header("References")]
@@ -74,7 +75,6 @@ public class MeleAttack : MonoBehaviour, IAttack
 
     private void RotateToPlayer()
     {
-        Debug.Log("RotoMele");
         Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * timeToFaceTarget);
     }

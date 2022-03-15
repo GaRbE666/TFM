@@ -17,7 +17,7 @@ public class WeeperMovement : MonoBehaviour
     [SerializeField] private float distanceToDodge;
     [SerializeField] private float minTimeToDodgeAgain;
     [SerializeField] private float maxTimeToDodgeAgain;
-    [Range(0, 1)] [Tooltip("Porcentaje de exito de hacer un dodge, 0.2 equivale a un 80% de exito, 0.8 equivale a un 20% de exito")]
+    [Range(0, 1)]
     [SerializeField] private float percentageToDodge;
 
     [Header("Debug Config")]
@@ -26,6 +26,7 @@ public class WeeperMovement : MonoBehaviour
     [SerializeField] private Color nonReachableObjetive;
 
     private NavMeshAgent _navMeshAgent;
+    public Vector3 startPoint;
     private float _randomTimeToDodgeAgain;
     [SerializeField] private bool _canDodge;
     [HideInInspector] public float stoppingDistance;
@@ -40,6 +41,7 @@ public class WeeperMovement : MonoBehaviour
 
     private void Start()
     {
+        startPoint = transform.position;
         stoppingDistance = _navMeshAgent.stoppingDistance;
         _canDodge = true;
     }
@@ -57,23 +59,35 @@ public class WeeperMovement : MonoBehaviour
             return;
         }
 
-        if (CheckDistanceToPlayer() && !CheckDistanceToPlayer(_navMeshAgent.stoppingDistance))
+        if (CheckDistanceToPlayer())
         {
-            isMoving = true;
-            weeperAnimation.WalkAnim();
-            _navMeshAgent.SetDestination(target.position);
+            if (CheckMinDistanceToPlayer(stoppingDistance)) //Player is too near and stop walk
+            {
+                isMoving = false;
+                _navMeshAgent.SetDestination(transform.position);
+                weeperAnimation.StopWalkAnim();
+            }
+            else
+            {
+                isMoving = true;
+                _navMeshAgent.SetDestination(target.position);
+            }
         }
         else
         {
+            _navMeshAgent.SetDestination(startPoint);
+        }
+
+        if (CheckDistanceToStartPoint(stoppingDistance)) //Reach the start point
+        {
             isMoving = false;
-            _navMeshAgent.SetDestination(transform.position);
             weeperAnimation.StopWalkAnim();
         }
 
-        if (CheckDistanceToPlayer(distanceToDodge) && _canDodge && !weeperHealth.isGettingHurt)
-        {
-            StartCoroutine(DodgeCoroutine());
-        } 
+        //if (CheckDistanceToPlayer(distanceToDodge) && _canDodge && !weeperHealth.isGettingHurt)
+        //{
+        //    StartCoroutine(DodgeCoroutine());
+        //} 
     }
 
     private void OnDrawGizmos()
@@ -100,16 +114,21 @@ public class WeeperMovement : MonoBehaviour
         return Vector3.Distance(transform.position, target.position) < distanceToFollow;
     }
 
-    private bool CheckDistanceToPlayer(float ditanceToCompare)
+    private bool CheckMinDistanceToPlayer(float ditanceToCompare)
     {
         return Vector3.Distance(transform.position, target.position) <= ditanceToCompare;
+    }
+
+    private bool CheckDistanceToStartPoint(float distanceToCompare)
+    {
+        return Vector3.Distance(transform.position, startPoint) <= distanceToCompare;
     }
 
     private IEnumerator DodgeCoroutine()
     {
         _canDodge = false;
         _randomTimeToDodgeAgain = Random.Range(minTimeToDodgeAgain, maxTimeToDodgeAgain);
-        if (Random.value > percentageToDodge)
+        if (Random.value < percentageToDodge)
         {    
             RotateToPlayer();
             DodgeAnimation();

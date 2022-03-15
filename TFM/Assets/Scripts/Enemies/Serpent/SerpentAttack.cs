@@ -16,11 +16,16 @@ public class SerpentAttack : MonoBehaviour
     [SerializeField] private float minTimeToNextAttack;
 
     [Header("Debug Config")]
-    [Tooltip("Select this option to make the enemy repeat indefinitely the attack of your choice.")]
-    [SerializeField] private bool forceAttack;
-    [Range(1, 6)]
-    [Tooltip("Choose which attack you want to be repeated")]
-    [SerializeField] private int doThisAttack;
+    [Tooltip("Select this option to make the enemy repeat indefinitely the mele attack of your choice.")]
+    [SerializeField] private bool forceMeleAttack;
+    [Range(1, 3)]
+    [Tooltip("Choose which mele attack you want to be repeated")]
+    [SerializeField] private int doThisMeleAttack;
+    [Tooltip("Select this option to make the enemy repeat indefinitely the magic attack of your choice.")]
+    [SerializeField] private bool forceMagicAttack;
+    [Range(4, 6)]
+    [Tooltip("Choose which magic attack you want to be repeated")]
+    [SerializeField] private int doThisMagicAttack;
     [Tooltip("Draw the attack radius")]
     [SerializeField] private bool canDraw;
     [SerializeField] private Color reachableObjetive;
@@ -29,7 +34,9 @@ public class SerpentAttack : MonoBehaviour
     [HideInInspector] public bool isAttacking;
     [HideInInspector] public bool _canAttack;
     private const int MIN_ATTACK = 1;
-    private const int MAX_ATTACK = 6;
+    private const int MAX_ATTACK = 3;
+    private const int MIN_MAGIC_ATTACK = 4;
+    private const int MAX_MAGIC_ATTACK = 6;
     #endregion
 
     #region UNITY METHODS
@@ -50,19 +57,16 @@ public class SerpentAttack : MonoBehaviour
             return;
         }
 
-        if (CheckDistance(serpentMovement.stoppingDistance)/* && !weeperHealth.isGettingHurt*/)
+        if (serpentMovement.meleDistance)
         {
-            isAttacking = true;
-            _canAttack = false;
-            if (forceAttack)
-            {
-                serpentAnimation.AttackAnim(doThisAttack);
-            }
-            else
-            {
-                serpentAnimation.AttackAnim(GenerateRandomAttack());
-            }
+            MeleAttack();
         }
+        else
+        {
+            MagicAttack();
+        }
+
+
     }
 
     private void OnDrawGizmos()
@@ -71,20 +75,71 @@ public class SerpentAttack : MonoBehaviour
         {
             float distance = Vector3.Distance(transform.position, target.position);
 
-            if (distance <= serpentMovement.stoppingDistance)
+            if (serpentMovement.meleDistance)
             {
-                Gizmos.color = reachableObjetive;
+                if (distance <= serpentMovement.stoppingMeleDistance)
+                {
+                    Gizmos.color = reachableObjetive;
+                }
+                else
+                {
+                    Gizmos.color = nonReachableObjetive;
+                }
+                Gizmos.DrawWireSphere(transform.position, serpentMovement.stoppingMeleDistance);
             }
             else
             {
-                Gizmos.color = nonReachableObjetive;
+                if (distance <= serpentMovement.stoppingMagicDistance)
+                {
+                    Gizmos.color = reachableObjetive;
+                }
+                else
+                {
+                    Gizmos.color = nonReachableObjetive;
+                }
+                Gizmos.DrawWireSphere(transform.position, serpentMovement.stoppingMagicDistance);
             }
-            Gizmos.DrawWireSphere(transform.position, serpentMovement.stoppingDistance);
+
+
         }
     }
     #endregion
 
     #region CUSTOM METHODS
+    private void MeleAttack()
+    {
+        if (CheckDistance(serpentMovement.stoppingMeleDistance)/* && !weeperHealth.isGettingHurt*/)
+        {
+            isAttacking = true;
+            _canAttack = false;
+            if (forceMeleAttack)
+            {
+                serpentAnimation.AttackAnim(doThisMeleAttack);
+            }
+            else
+            {
+                serpentAnimation.AttackAnim(GenerateRandomMeleAttack());
+            }
+        }
+    }
+
+    private void MagicAttack()
+    {
+        if (CheckDistance(serpentMovement.stoppingMagicDistance)/* && !weeperHealth.isGettingHurt*/)
+        {
+            isAttacking = true;
+            _canAttack = false;
+            if (forceMagicAttack)
+            {
+                serpentAnimation.AttackAnim(doThisMagicAttack);
+            }
+            else
+            {
+                serpentAnimation.AttackAnim(GenerateRandomMagicAttack());
+            }
+        }
+    }
+
     private bool CheckDistance(float distance)
     {
         return Vector3.Distance(transform.position, target.position) <= distance;
@@ -102,9 +157,13 @@ public class SerpentAttack : MonoBehaviour
         _canAttack = true;
     }
 
-    private int GenerateRandomAttack()
+    private int GenerateRandomMeleAttack()
     {
         return Random.Range(MIN_ATTACK, MAX_ATTACK);
+    }
+    private int GenerateRandomMagicAttack()
+    {
+        return Random.Range(MIN_MAGIC_ATTACK, MAX_MAGIC_ATTACK);
     }
 
     private float GenerateRandomTimeToNextAttack()

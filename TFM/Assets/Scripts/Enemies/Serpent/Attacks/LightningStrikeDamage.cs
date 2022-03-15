@@ -17,6 +17,7 @@ public class LightningStrikeDamage : MonoBehaviour
     {
         if (!particle.isPlaying)
         {
+            bounds = Vector3.zero;
             return;
         }
         Vector3 offsetPosition = new Vector3(transform.position.x, transform.position.y + Offset, transform.position.z);
