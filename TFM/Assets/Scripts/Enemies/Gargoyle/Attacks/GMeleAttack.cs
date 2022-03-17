@@ -21,10 +21,18 @@ public class GMeleAttack : MonoBehaviour
     [SerializeField] private GargoyleHealth gargoyleHealth;
 
     private bool _canRotateToTarget;
+    private float _radiusAttack1Aux;
+    private float _radiusAttack2Aux;
     #endregion
 
 
     #region UNITY METHODS
+    private void Start()
+    {
+        _radiusAttack1Aux = radiusAttack1;
+        _radiusAttack2Aux = radiusAttack2;
+    }
+
     private void FixedUpdate()
     {
         if (gargoyleHealth.isDead)
@@ -75,13 +83,14 @@ public class GMeleAttack : MonoBehaviour
     {
         if (gargoyleAnimation.IfCurrentAnimationIsPlaying("Attack02"))
         {
-            Collider[] collisionsLeft = Physics.OverlapSphere(attack2LeftPosition.position, radiusAttack2, player);
-            Collider[] collisionsRight = Physics.OverlapSphere(attack2RightPosition.position, radiusAttack2, player);
+            Collider[] collisionsLeft = Physics.OverlapSphere(attack2LeftPosition.position, _radiusAttack2Aux, player);
+            Collider[] collisionsRight = Physics.OverlapSphere(attack2RightPosition.position, _radiusAttack2Aux, player);
 
             foreach (Collider collision in collisionsLeft)
             {
                 if (collision.GetComponent<PlayerHealth>())
                 {
+                    _radiusAttack2Aux = 0;
                     PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
                     if (playerHealth.death)
                     {
@@ -96,6 +105,7 @@ public class GMeleAttack : MonoBehaviour
             {
                 if (collision.GetComponent<PlayerHealth>())
                 {
+                    _radiusAttack2Aux = 0;
                     PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
                     if (playerHealth.death)
                     {
@@ -108,12 +118,13 @@ public class GMeleAttack : MonoBehaviour
         }
         else
         {
-            Collider[] collisions = Physics.OverlapSphere(attack1Position.position, radiusAttack1, player);
+            Collider[] collisions = Physics.OverlapSphere(attack1Position.position, _radiusAttack1Aux, player);
 
             foreach (Collider collision in collisions)
             {
                 if (collision.GetComponent<PlayerHealth>())
                 {
+                    _radiusAttack1Aux = 0;
                     PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
                     if (playerHealth.death)
                     {
@@ -124,6 +135,9 @@ public class GMeleAttack : MonoBehaviour
                 }
             }
         }
+
+        _radiusAttack1Aux = radiusAttack1;
+        _radiusAttack2Aux = radiusAttack2;
     }
     #endregion
 }

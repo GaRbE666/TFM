@@ -92,12 +92,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (InputController.instance.isRolling && GroundChecker() && !isMoving)
         {
-            DashBack();
+            //DashBack();
+            playerAnimation.RollBackTrigger();
         }
 
         if (InputController.instance.isRolling && GroundChecker() && isMoving)
         {
-            DashForward();
+            //DashForward();
+            playerAnimation.RollForwardTrigger();
         }
 
         if (GroundChecker())
@@ -147,9 +149,9 @@ public class PlayerMovement : MonoBehaviour
     //    }
     //}
 
-    private void DashBack()
+    public void DashBack()
     {
-        playerAnimation.RollBackTrigger();
+        //playerAnimation.RollBackTrigger();
         _rb.drag = 8f;
         Vector3 dashVelocity = Vector3.Scale(-transform.forward, backDashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1))/ -Time.deltaTime));
         _rb.AddForce(dashVelocity, ForceMode.VelocityChange);
@@ -157,9 +159,9 @@ public class PlayerMovement : MonoBehaviour
         InputController.instance.isRolling = false;
     }
 
-    private void DashForward()
+    public void DashForward()
     {
-        playerAnimation.RollForwardTrigger();
+        //playerAnimation.RollForwardTrigger();
         _rb.drag = 8f;
         Vector3 dashVelocity = Vector3.Scale(transform.forward, forwardDashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime));
         _rb.AddForce(dashVelocity, ForceMode.VelocityChange);
