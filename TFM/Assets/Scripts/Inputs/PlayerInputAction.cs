@@ -313,6 +313,52 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MainMenu"",
+            ""id"": ""67e784f2-bf7a-4071-a903-76a19cfcf09e"",
+            ""actions"": [
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""9342738b-d879-4348-9a2b-cb0632dd43b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""37ce98e4-937d-440f-8830-bd9c58e51eeb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3575f46e-ee92-4239-91b2-82c727386d43"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a32055b5-95ad-40be-9222-073db18bf341"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -351,6 +397,10 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
         m_Player_RecenterCamera = m_Player.FindAction("RecenterCamera", throwIfNotFound: true);
         m_Player_LockTarget = m_Player.FindAction("LockTarget", throwIfNotFound: true);
+        // MainMenu
+        m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
+        m_MainMenu_Down = m_MainMenu.FindAction("Down", throwIfNotFound: true);
+        m_MainMenu_Up = m_MainMenu.FindAction("Up", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -493,6 +543,47 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // MainMenu
+    private readonly InputActionMap m_MainMenu;
+    private IMainMenuActions m_MainMenuActionsCallbackInterface;
+    private readonly InputAction m_MainMenu_Down;
+    private readonly InputAction m_MainMenu_Up;
+    public struct MainMenuActions
+    {
+        private @PlayerInputAction m_Wrapper;
+        public MainMenuActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Down => m_Wrapper.m_MainMenu_Down;
+        public InputAction @Up => m_Wrapper.m_MainMenu_Up;
+        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
+        public void SetCallbacks(IMainMenuActions instance)
+        {
+            if (m_Wrapper.m_MainMenuActionsCallbackInterface != null)
+            {
+                @Down.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnDown;
+                @Down.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnDown;
+                @Down.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnDown;
+                @Up.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnUp;
+                @Up.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnUp;
+                @Up.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnUp;
+            }
+            m_Wrapper.m_MainMenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+            }
+        }
+    }
+    public MainMenuActions @MainMenu => new MainMenuActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -522,5 +613,10 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnSwitchWeapon(InputAction.CallbackContext context);
         void OnRecenterCamera(InputAction.CallbackContext context);
         void OnLockTarget(InputAction.CallbackContext context);
+    }
+    public interface IMainMenuActions
+    {
+        void OnDown(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
     }
 }
