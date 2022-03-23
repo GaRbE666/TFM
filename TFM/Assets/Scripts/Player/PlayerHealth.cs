@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        HUDController.instance.SetPlayerHealthMaxValueSlider(currentHealth);
     }
 
     #endregion
@@ -27,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        HUDController.instance.SetPlayerHealthValue(currentHealth);
         CheckIfIAmDead();
     }
 

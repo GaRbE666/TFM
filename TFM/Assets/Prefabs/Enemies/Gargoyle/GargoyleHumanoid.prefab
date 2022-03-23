@@ -3740,6 +3740,7 @@ GameObject:
   - component: {fileID: 1198634618}
   - component: {fileID: 159533206}
   - component: {fileID: 353763551}
+  - component: {fileID: 7114986558574979050}
   m_Layer: 8
   m_Name: GargoyleHumanoid
   m_TagString: Untagged
@@ -3972,6 +3973,19 @@ MonoBehaviour:
   target: {fileID: 0}
   gargoyleAnimation: {fileID: 1198634622}
   gargoyleHealth: {fileID: 1198634620}
+--- !u!114 &7114986558574979050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde24677f6087be48a1f329ca0458838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 100
 --- !u!1 &197494
 GameObject:
   m_ObjectHideFlags: 0

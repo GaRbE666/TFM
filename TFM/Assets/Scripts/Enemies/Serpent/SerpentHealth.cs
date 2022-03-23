@@ -10,6 +10,7 @@ public class SerpentHealth : MonoBehaviour
     [SerializeField] private SerpentAnimation serpentAnimaton;
     [SerializeField] private BloodPrefabs bloodPrefab;
     [SerializeField] private CapsuleCollider[] serpentColliders;
+    [SerializeField] private EnemyScore enemyScore;
 
     [Header("Parameters")]
     [SerializeField] private float maxHealth;
@@ -43,9 +44,7 @@ public class SerpentHealth : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            DisableAllColliders();
-            isDead = true;
-            serpentAnimaton.DeadAnim();
+            Dead();
         }
         else
         {
@@ -59,6 +58,14 @@ public class SerpentHealth : MonoBehaviour
     public void CanGotHitAnimAgain() //Method called by AnimationEvent GotHit
     {
         isGettingHurt = false;
+    }
+
+    private void Dead()
+    {
+        DisableAllColliders();
+        isDead = true;
+        serpentAnimaton.DeadAnim();
+        HUDController.instance.SetSoulsInCounter(enemyScore.GetScore());
     }
 
     private void DisableAllColliders()

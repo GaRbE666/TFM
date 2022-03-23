@@ -138,7 +138,6 @@ public class GargoyleMovement : MonoBehaviour
     public void CheckIfICanFly()
     {
         float percentageRandom = Random.value;
-        Debug.Log(percentageRandom);
         if (percentageRandom < percentageToFly)
         {
             isFlying = true;

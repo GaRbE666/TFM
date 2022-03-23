@@ -10,6 +10,7 @@ public class GargoyleHealth : MonoBehaviour
     [SerializeField] private GargoyleAttack gargoyleAttack;
     [SerializeField] private BloodPrefabs bloodPrefab;
     [SerializeField] private CapsuleCollider[] gargoyleColliders;
+    [SerializeField] private EnemyScore enemyScore;
 
     [Header("Parameters")]
     [SerializeField] private float maxHealth;
@@ -43,9 +44,7 @@ public class GargoyleHealth : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            DisableAllColliders();
-            isDead = true;
-            gargoyleAnimation.DeadAnim();
+            Dead();
         }
         else
         {
@@ -59,6 +58,14 @@ public class GargoyleHealth : MonoBehaviour
     public void CanGotHitAnimAgain() //Method called by AnimationEvent Hit amd FlyHit
     {
         isGettingHurt = false;
+    }
+
+    private void Dead()
+    {
+        DisableAllColliders();
+        isDead = true;
+        gargoyleAnimation.DeadAnim();
+        HUDController.instance.SetSoulsInCounter(enemyScore.GetScore());
     }
 
     private void DisableAllColliders()
