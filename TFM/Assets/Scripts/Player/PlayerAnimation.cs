@@ -19,7 +19,7 @@ public class PlayerAnimation : MonoBehaviour
     private int _switchWeapon = Animator.StringToHash("switchWeapon");
     private int _velocityX = Animator.StringToHash("velocityX");
     private int _velocityZ = Animator.StringToHash("velocityZ");
-    private int _aiming = Animator.StringToHash("aim");
+    //private int _aiming = Animator.StringToHash("aim");
     private int _hitting = Animator.StringToHash("hit");
     #endregion
 
@@ -39,15 +39,15 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetTrigger(_hitting);
     }
 
-    public void AimTarget()
-    {
-        playerAnimator.SetBool(_aiming, true);
-    }
+    //public void AimTarget()
+    //{
+    //    playerAnimator.SetBool(_aiming, true);
+    //}
 
-    public void NotAimTarget()
-    {
-        playerAnimator.SetBool(_aiming, false);
-    }
+    //public void NotAimTarget()
+    //{
+    //    playerAnimator.SetBool(_aiming, false);
+    //}
 
     public void StrongAttackAnim()
     {

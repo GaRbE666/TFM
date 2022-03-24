@@ -13,6 +13,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private bool canHurt;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float radius;
+    [SerializeField] private float costOfStamina;
 
     [Header("Debuggin")]
     [SerializeField] private bool canDraw;
@@ -23,6 +24,11 @@ public class PlayerAttack : MonoBehaviour
     #region UNITY METHODS
     private void Update()
     {
+        if (HUDController.instance.GetCurrentValueOfStaminaBar() <= 0)
+        {
+            return;
+        }
+
         if (InputController.instance.isAttacking && InputController.instance.canPress)
         {
             Attack();
@@ -33,14 +39,14 @@ public class PlayerAttack : MonoBehaviour
             StrongAttack();
         }
 
-        if (InputController.instance.isAiming)
-        {
-            _playerAnimation.AimTarget();
-        }
-        else
-        {
-            _playerAnimation.NotAimTarget();
-        }
+        //if (InputController.instance.isAiming)
+        //{
+        //    _playerAnimation.AimTarget();
+        //}
+        //else
+        //{
+        //    _playerAnimation.NotAimTarget();
+        //}
     }
 
     private void OnDrawGizmos()
@@ -70,6 +76,7 @@ public class PlayerAttack : MonoBehaviour
     private void Attack()
     {
         _playerAnimation.AttackAnim();
+        HUDController.instance.ConsumeStamina(costOfStamina);
         InputController.instance.isAttacking = false;
     }
 

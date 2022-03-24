@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float backDashDistance;
     [SerializeField] private float forwardDashDistance;
+    [SerializeField] private float maxStamina; //Probably put in another code
+    [SerializeField] private float costOfStamina;
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
     public float RotationSmoothTime = 0.12f;
@@ -51,6 +53,11 @@ public class PlayerMovement : MonoBehaviour
         playerAnimation = GetComponent<PlayerAnimation>();
     }
 
+    private void Start()
+    {
+        HUDController.instance.SetMaxStamina(maxStamina);
+    }
+
     private void Update()
     {
 
@@ -85,17 +92,17 @@ public class PlayerMovement : MonoBehaviour
             playerAnimation.NotMoveAnim();
         }
 
-        if (InputController.instance.isJumping && GroundChecker())
+        if (InputController.instance.isJumping && GroundChecker() && (HUDController.instance.GetCurrentValueOfStaminaBar() > 0))
         {
             Jump();
         }
 
-        if (InputController.instance.isRolling && GroundChecker() && !isMoving)
+        if (InputController.instance.isRolling && GroundChecker() && !isMoving && (HUDController.instance.GetCurrentValueOfStaminaBar() > 0))
         {
             playerAnimation.RollBackTrigger();
         }
 
-        if (InputController.instance.isRolling && GroundChecker() && isMoving)
+        if (InputController.instance.isRolling && GroundChecker() && isMoving && (HUDController.instance.GetCurrentValueOfStaminaBar() > 0))
         {
             playerAnimation.RollForwardTrigger();
         }
@@ -153,6 +160,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dashVelocity = Vector3.Scale(-transform.forward, backDashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1))/ -Time.deltaTime));
         _rb.AddForce(dashVelocity, ForceMode.VelocityChange);
         _rb.drag = 0f;
+        HUDController.instance.ConsumeStamina(costOfStamina);
         InputController.instance.isRolling = false;
     }
 
@@ -162,6 +170,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dashVelocity = Vector3.Scale(transform.forward, forwardDashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _rb.drag + 1)) / -Time.deltaTime));
         _rb.AddForce(dashVelocity, ForceMode.VelocityChange);
         _rb.drag = 0f;
+        HUDController.instance.ConsumeStamina(costOfStamina);
         InputController.instance.isRolling = false;
     }
 
@@ -169,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2 * Physics.gravity.y), ForceMode.VelocityChange);
         playerAnimation.JumpAnim();
+        HUDController.instance.ConsumeStamina(costOfStamina);
         InputController.instance.isJumping = false;
     }
 

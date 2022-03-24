@@ -6,7 +6,6 @@ public class PlayerWeapon : MonoBehaviour
 {
     #region FIELDS
     [SerializeField] private PlayerAnimation playerAnimation;
-
     [SerializeField] private Transform handOfArms;
     [SerializeField] private int selectedWeapon;
 

@@ -10,6 +10,11 @@ public class HUDController : MonoBehaviour
 
     [SerializeField] private Text soulsCounterText;
     [SerializeField] private Slider playerHealthBar;
+    [SerializeField] private Slider playerStaminaBar;
+    [SerializeField] private float timeToCanRecoveryStamina;
+    [SerializeField] private float staminaPerSecond;
+    private float currentStamina;
+    private bool canRestoreStamina;
     private int totalSouls;
 
     private void Awake()
@@ -30,6 +35,19 @@ public class HUDController : MonoBehaviour
         soulsCounterText.text = totalSouls.ToString();
     }
 
+    private void Update()
+    {
+        if (currentStamina >= playerStaminaBar.maxValue)
+        {
+            return;
+        }
+        if (canRestoreStamina)
+        {
+            currentStamina += Time.deltaTime * staminaPerSecond;
+            playerStaminaBar.value = currentStamina;
+        }
+    }
+
     public void SetSoulsInCounter(int numSouls)
     {
         totalSouls += numSouls;
@@ -45,5 +63,40 @@ public class HUDController : MonoBehaviour
     {
         playerHealthBar.maxValue = maxHealth;
         playerHealthBar.value = maxHealth;
+    }
+
+    public void SetMaxStamina(float maxStamina)
+    {
+        playerStaminaBar.maxValue = maxStamina;
+        playerStaminaBar.value = maxStamina;
+        currentStamina = maxStamina;
+    }
+    public void ConsumeStamina(float stamina)
+    {
+        currentStamina -= stamina;
+        if (currentStamina < 0)
+        {
+            currentStamina = 0;
+        }
+        playerStaminaBar.value = currentStamina;
+        StopAllCoroutines();
+        StartCoroutine(WaitToStartRestoreStamina());
+    }
+
+    private IEnumerator WaitToStartRestoreStamina()
+    {
+        canRestoreStamina = false;
+        yield return new WaitForSeconds(timeToCanRecoveryStamina);
+        canRestoreStamina = true;
+    }
+
+    public float GetCurrentValueOfHealthBar()
+    {
+        return playerHealthBar.value;
+    }
+
+    public float GetCurrentValueOfStaminaBar()
+    {
+        return playerStaminaBar.value;
     }
 }
