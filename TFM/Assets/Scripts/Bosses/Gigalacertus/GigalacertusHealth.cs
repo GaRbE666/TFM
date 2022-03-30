@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GargoyleHealth : MonoBehaviour
+public class GigalacertusHealth : MonoBehaviour
 {
     #region FIELDS
     [Header("References")]
-    [SerializeField] private GargoyleAnimation gargoyleAnimation;
-    [SerializeField] private GargoyleAttack gargoyleAttack;
-    [SerializeField] private BloodPrefabs bloodPrefab;
-    [SerializeField] private CapsuleCollider[] gargoyleColliders;
-    [SerializeField] private EnemyScore enemyScore;
+    [SerializeField] private GigalacertusAnimation gigalacertusAnimation;
+    [SerializeField] private BloodPrefabs bloodPrefabs;
+    [SerializeField] private Collider[] gigalocertusColliders;
+    [SerializeField] private Collider[] tongueColliders;
 
     [Header("Parameters")]
     [SerializeField] private float maxHealth;
@@ -37,7 +36,7 @@ public class GargoyleHealth : MonoBehaviour
 
     public void GenerateBlood(Transform hit)
     {
-        bloodPrefab.InstantiateBlood(hit);
+        bloodPrefabs.InstantiateBlood(hit);
     }
 
     public void CheckIfIAmDead()
@@ -48,14 +47,12 @@ public class GargoyleHealth : MonoBehaviour
         }
         else
         {
-            gargoyleAttack.isAttacking = false;
-            gargoyleAttack._canAttack = true;
             isGettingHurt = true;
-            gargoyleAnimation.HitAnim();
+            gigalacertusAnimation.TongueHitAnim();
         }
     }
 
-    public void CanGotHitAnimAgain() //Method called by AnimationEvent Hit and FlyHit
+    public void CanGotHitAnimAgain() //Method called by AnimationEvent
     {
         isGettingHurt = false;
     }
@@ -64,13 +61,28 @@ public class GargoyleHealth : MonoBehaviour
     {
         DisableAllColliders();
         isDead = true;
-        gargoyleAnimation.DeadAnim();
-        HUDController.instance.SetSoulsInCounter(enemyScore.GetScore());
+        gigalacertusAnimation.DeadAnim();
+    }
+
+    public void EnableTongueColliders() //Method called by AnimationEvent
+    {
+        foreach (Collider collider in tongueColliders)
+        {
+            collider.enabled = true;
+        }
+    }
+
+    public void DisableTongueColliders() //method called by AnimationEvent
+    {
+        foreach (Collider collider in tongueColliders)
+        {
+            collider.enabled = false;
+        }
     }
 
     private void DisableAllColliders()
     {
-        foreach (CapsuleCollider collider in gargoyleColliders)
+        foreach (Collider collider in gigalocertusColliders)
         {
             collider.enabled = false;
         }
