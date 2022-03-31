@@ -14,7 +14,7 @@ public class GigalacertusAnimation : MonoBehaviour
     private int _hornsLightingAttack = Animator.StringToHash("hornsLightingAttack");
     private int _spittersAttack = Animator.StringToHash("spittersAttack");
     private int _tongueAttack = Animator.StringToHash("tongueAttack");
-    private int _tongueHit = Animator.StringToHash("tongueHit");
+    //private int _tongueHit = Animator.StringToHash("tongueHit");
     private int _ramAttack = Animator.StringToHash("ramAttack");
     #endregion
 
@@ -44,10 +44,10 @@ public class GigalacertusAnimation : MonoBehaviour
         bossAnimator.SetTrigger(_playerDetected);
     }
 
-    public void TongueHitAnim()
-    {
-        bossAnimator.SetTrigger(_tongueHit);
-    }
+    //public void TongueHitAnim()
+    //{
+    //    bossAnimator.SetTrigger(_tongueHit);
+    //}
 
     public void AttackAnim(int attack)
     {

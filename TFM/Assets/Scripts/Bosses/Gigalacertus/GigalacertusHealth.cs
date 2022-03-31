@@ -48,7 +48,7 @@ public class GigalacertusHealth : MonoBehaviour
         else
         {
             isGettingHurt = true;
-            gigalacertusAnimation.TongueHitAnim();
+            //gigalacertusAnimation.TongueHitAnim();
         }
     }
 
