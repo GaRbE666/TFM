@@ -35,7 +35,7 @@ public class SerpentHealth : MonoBehaviour
         CheckIfIAmDead();
     }
 
-    public void GenerateBlood(Transform hit)
+    public void GenerateBlood(Transform hit) //Called by PlayerAttack
     {
         bloodPrefab.InstantiateBlood(hit);
     }

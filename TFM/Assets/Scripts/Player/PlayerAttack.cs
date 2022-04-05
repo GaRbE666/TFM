@@ -8,6 +8,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerWeapon weapons;
     [SerializeField] private PlayerAnimation _playerAnimation;
+    [SerializeField] private PlayerBlock playerBlock;
 
     [Header("Config")]
     [SerializeField] private bool canHurt;
@@ -29,24 +30,15 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
-        if (InputController.instance.isAttacking && InputController.instance.canPress)
+        if (InputController.instance.isAttacking && InputController.instance.canPress && !playerBlock.isBlocking)
         {
             Attack();
         }
 
-        if (InputController.instance.isStrongAttacking && InputController.instance.canPress)
+        if (InputController.instance.isStrongAttacking && InputController.instance.canPress && !playerBlock.isBlocking)
         {
             StrongAttack();
         }
-
-        //if (InputController.instance.isAiming)
-        //{
-        //    _playerAnimation.AimTarget();
-        //}
-        //else
-        //{
-        //    _playerAnimation.NotAimTarget();
-        //}
     }
 
     private void OnDrawGizmos()
@@ -109,6 +101,13 @@ public class PlayerAttack : MonoBehaviour
                 GargoyleHealth gargoyleHealth = enemyCollider.transform.root.GetComponent<GargoyleHealth>();
                 gargoyleHealth.TakeDamage(CalculateDamage());
                 gargoyleHealth.GenerateBlood(enemyCollider.gameObject.transform);
+            }
+
+            if (enemyCollider.transform.root.GetComponent<GigalacertusHealth>())
+            {
+                GigalacertusHealth gigalacertusHealth = enemyCollider.transform.root.GetComponent<GigalacertusHealth>();
+                gigalacertusHealth.TakeDamage(CalculateDamage());
+                gigalacertusHealth.GenerateBlood(enemyCollider.gameObject.transform);
             }
         }
     }

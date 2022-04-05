@@ -6,6 +6,8 @@ public class PlayerBlock : MonoBehaviour
 {
     #region FIELDS
     [SerializeField] private PlayerAnimation playerAnimation;
+    [HideInInspector] public bool isBlocking;
+    public float costOfStamina;
 
     #endregion
 
@@ -26,11 +28,13 @@ public class PlayerBlock : MonoBehaviour
     #region CUSTOM METHODS
     private void Unblock()
     {
+        isBlocking = false;
         playerAnimation.BlockAnim(false);
     }
 
     private void Block()
     {
+        isBlocking = true;
         playerAnimation.BlockAnim(true);
     }
     #endregion

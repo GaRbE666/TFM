@@ -11,7 +11,6 @@ public class SerpentAttack : MonoBehaviour
     [SerializeField] private Transform target;
 
     [Header("Attack Config")]
-    [Tooltip("Value of damage done by the enemy")]
     [SerializeField] private float maxTimeToNextAttack;
     [SerializeField] private float minTimeToNextAttack;
 

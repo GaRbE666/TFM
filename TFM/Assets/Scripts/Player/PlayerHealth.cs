@@ -7,8 +7,11 @@ public class PlayerHealth : MonoBehaviour
     #region FIELDS
     [SerializeField] private float maxHealth;
     [SerializeField] private float currentHealth;
+    [Range(0, 1)]
+    [SerializeField] private float damageReduction;
     [SerializeField] private PlayerAnimation playerAnimation;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerBlock playerBlock;
     [SerializeField] private Collider[] colliders;
     [SerializeField] private PlayerWeapon playerWeapon;
 
@@ -27,9 +30,22 @@ public class PlayerHealth : MonoBehaviour
     #region CUSTOM METHODS
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        if (playerAnimation.IfCurrentAnimationIsPlaying("Shield-Block") || playerAnimation.IfCurrentAnimationIsPlaying("Shield-Walk-Slow-Block"))
+        {
+            ReduceDamage(damage, damageReduction);
+            HUDController.instance.ConsumeStamina(playerBlock.costOfStamina);
+        }
+        else
+        {
+            currentHealth -= damage;
+        }
         HUDController.instance.SetPlayerHealthValue(currentHealth);
         CheckIfIAmDead();
+    }
+
+    private void ReduceDamage(float damage, float reduction)
+    {
+        currentHealth -= (damage * reduction);
     }
 
     private void CheckIfIAmDead()
