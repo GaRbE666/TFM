@@ -23,7 +23,7 @@ public class GigalacertusMovement : MonoBehaviour
     [SerializeField] private Color reachableObjetive;
     [SerializeField] private Color nonReachableObjetive;
 
-    [HideInInspector] public bool isMoving;
+    /*[HideInInspector] */public bool isMoving;
     private bool canFollow;
     #endregion
 
@@ -42,12 +42,10 @@ public class GigalacertusMovement : MonoBehaviour
 
         if (CheckDistanceToPlayer() && !CheckStoppingDistance() && canFollow)
         {
-            isMoving = true;
             Move();
         }
         else
         {
-            isMoving = false;
             DontMove();
         }
         
@@ -81,6 +79,7 @@ public class GigalacertusMovement : MonoBehaviour
     #region CUSTOM METHODS
     private void Move()
     {
+        isMoving = true;
         gigalacertusAnimation.StartWalkAnim();
         RotateToPlayer();
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
@@ -88,6 +87,7 @@ public class GigalacertusMovement : MonoBehaviour
 
     private void DontMove()
     {
+        isMoving = false;
         gigalacertusAnimation.StopWalkAnim();
         StartCoroutine(WaitToFollowPlayerAgain());
     }

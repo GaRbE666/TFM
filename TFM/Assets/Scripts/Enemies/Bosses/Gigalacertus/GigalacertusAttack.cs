@@ -26,7 +26,7 @@ public class GigalacertusAttack : MonoBehaviour
     [SerializeField] private Color frontAttackDetectionColor;
 
     [HideInInspector] public bool isAttacking;
-    [HideInInspector] public bool _canAttack;
+    /*[HideInInspector]*/ public bool _canAttack;
     public bool _detectedInFront;
     public bool _doFrontalAttack;
     private const int MIN_ATTACK = 1;
@@ -69,9 +69,10 @@ public class GigalacertusAttack : MonoBehaviour
     #region CUSTOM METHODS
     private void BossAttack()
     {
-        
+        Debug.Log("Entro al metodo");
         if (CheckDistance(gigalacertusMovement.stoppingDistance)/* && !gigalacertusMovement.isMoving*/)
         {
+            Debug.Log("Puedo atacar");
             isAttacking = true;
             _canAttack = false;
             if (forceAttack)

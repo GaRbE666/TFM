@@ -15,7 +15,7 @@
                 },
                 {
                     "name": "Movement",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "1928e23a-7c48-4393-b818-51f3b07b9955",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -74,6 +74,14 @@
                     "type": "Button",
                     "id": "1c3964c1-139c-4e4f-8619-8c2049d494cf",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Camera",
+                    "type": "PassThrough",
+                    "id": "b44544e2-f0c9-418b-b968-c61ecbd6a6c1",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 }
@@ -296,6 +304,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "LockTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ce83523-4954-46a1-a536-12f87479dc20",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Gamepad",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "010fd353-bc16-4907-bcfe-c19d42445688",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "Keyboard",
+                    "action": "Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
