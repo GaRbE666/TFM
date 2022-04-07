@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 136604153773256302}
   - component: {fileID: 136451759493300016}
   m_Layer: 0
-  m_Name: PREF_sword_2
+  m_Name: LongSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
