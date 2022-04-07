@@ -11,7 +11,7 @@ namespace SG
         [SerializeField] private float rotationSpeed;
 
         public new Rigidbody rigidbody;
-        public GameObject nomrlaCamera;
+        public GameObject normalCamera;
 
         private Transform _cameraObject;
         private InputHandler _inputHandler;
@@ -36,24 +36,8 @@ namespace SG
             float delta = Time.deltaTime;
 
             _inputHandler.TickInput(delta);
-
-            _moveDirection = _cameraObject.forward * _inputHandler.vertical;
-            _moveDirection += _cameraObject.right * _inputHandler.horizontal;
-            _moveDirection.Normalize();
-            _moveDirection.y = 0;
-
-            float speed = movementSpeed;
-            _moveDirection *= speed;
-
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, _normalVector);
-            rigidbody.velocity = projectedVelocity;
-
-            animatorHandler.UpdateAnimatorValues(_inputHandler.moveAmount, 0);
-
-            if (animatorHandler.canRotate)
-            {
-                HandleRotation(delta);
-            }
+            HandleMovement(delta);
+            HandleRollingAndSprinting(delta);
         }
 
         #region MOVEMENT
@@ -83,6 +67,56 @@ namespace SG
 
             myTransform.rotation = targetRotation;
         }
+
+        private void HandleMovement(float delta)
+        {
+            
+
+            _moveDirection = _cameraObject.forward * _inputHandler.vertical;
+            _moveDirection += _cameraObject.right * _inputHandler.horizontal;
+            _moveDirection.Normalize();
+            _moveDirection.y = 0;
+
+            float speed = movementSpeed;
+            _moveDirection *= speed;
+
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, _normalVector);
+            rigidbody.velocity = projectedVelocity;
+
+            animatorHandler.UpdateAnimatorValues(_inputHandler.moveAmount, 0);
+
+            if (animatorHandler.canRotate)
+            {
+                HandleRotation(delta);
+            }
+        }
+
+        private void HandleRollingAndSprinting(float delta)
+        {
+            if (animatorHandler.anim.GetBool("isInteracting"))
+            {
+                return;
+            }
+
+            if (_inputHandler.rollFlag)
+            {
+                _moveDirection = _cameraObject.forward * _inputHandler.vertical;
+                _moveDirection += _cameraObject.right * _inputHandler.horizontal;
+
+                if (_inputHandler.moveAmount > 0)
+                {
+                    animatorHandler.PlayTargetAnimation("Rolling", true);
+                    _moveDirection.y = 0;
+                    Quaternion rollRotation = Quaternion.LookRotation(_moveDirection);
+                    myTransform.rotation = rollRotation;
+                }
+                else
+                {
+                    animatorHandler.PlayTargetAnimation("Backstep", true);
+                }
+            }
+        }
+
         #endregion
     }
 }
